@@ -1,0 +1,50 @@
+{
+  "version": "1.0.0",
+  "directReferral": {
+    "enabled": true,
+    "percentage": 10,
+    "minimumLevel": 1,
+    "descriptionKey": "commission.directReferral.description"
+  },
+  "teamLevels": [
+    {
+      "level": 1,
+      "percentage": 10,
+      "descriptionKey": "commission.teamLevels.level1"
+    },
+    {
+      "level": 2,
+      "percentage": 5,
+      "descriptionKey": "commission.teamLevels.level2"
+    },
+    {
+      "level": 3,
+      "percentage": 3,
+      "descriptionKey": "commission.teamLevels.level3"
+    },
+    {
+      "level": 4,
+      "percentage": 2,
+      "descriptionKey": "commission.teamLevels.level4"
+    },
+    {
+      "level": 5,
+      "percentage": 1,
+      "descriptionKey": "commission.teamLevels.level5"
+    }
+  ],
+  "commissionTypes": {
+    "direct_referral": {
+      "labelKey": "commission.types.directReferral",
+      "color": "#10B981"
+    },
+    "team_task": {
+      "labelKey": "commission.types.teamTask",
+      "color": "#3B82F6"
+    },
+    "level_bonus": {
+      "labelKey": "commission.types.levelBonus",
+      "color": "#F59E0B"
+    }
+  }
+}

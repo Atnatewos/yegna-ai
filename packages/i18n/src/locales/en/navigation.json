@@ -1,0 +1,25 @@
+{
+  "navigation": {
+    "dashboard": "Dashboard",
+    "tasks": "Tasks",
+    "team": "My Team",
+    "levels": "Levels",
+    "wallet": "Wallet"
+  },
+  "breadcrumbs": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "tasks": "Tasks",
+    "taskDetails": "Task Details",
+    "myTeam": "My Team",
+    "teamTree": "Team Tree",
+    "levels": "Levels",
+    "upgrade": "Upgrade",
+    "wallet": "Wallet",
+    "deposit": "Deposit",
+    "withdraw": "Withdraw",
+    "admin": "Admin",
+    "users": "Users",
+    "deposits": "Deposits"
+  }
+}

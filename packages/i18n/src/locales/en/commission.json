@@ -1,0 +1,19 @@
+{
+  "commission": {
+    "directReferral": {
+      "description": "Commission earned from direct referrals' deposits"
+    },
+    "teamLevels": {
+      "level1": "Commission from level 1 team members' task earnings",
+      "level2": "Commission from level 2 team members' task earnings",
+      "level3": "Commission from level 3 team members' task earnings",
+      "level4": "Commission from level 4 team members' task earnings",
+      "level5": "Commission from level 5 team members' task earnings"
+    },
+    "types": {
+      "directReferral": "Direct Referral Bonus",
+      "teamTask": "Team Task Commission",
+      "levelBonus": "Level Bonus"
+    }
+  }
+}

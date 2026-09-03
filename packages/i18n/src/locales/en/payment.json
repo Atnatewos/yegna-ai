@@ -1,0 +1,25 @@
+{
+  "payment": {
+    "methods": {
+      "telebirr": {
+        "label": "Telebirr",
+        "description": "Pay using Telebirr mobile money"
+      },
+      "cbeBirr": {
+        "label": "CBE Birr",
+        "description": "Pay using CBE Birr mobile banking"
+      },
+      "bankTransfer": {
+        "label": "Bank Transfer",
+        "description": "Direct bank transfer"
+      }
+    }
+  },
+  "withdrawal": {
+    "methods": {
+      "telebirr": "Telebirr",
+      "cbeBirr": "CBE Birr",
+      "bankAccount": "Bank Account"
+    }
+  }
+}

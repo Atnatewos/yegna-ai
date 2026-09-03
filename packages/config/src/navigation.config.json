@@ -1,0 +1,72 @@
+{
+  "version": "1.0.0",
+  "mainNavigation": [
+    {
+      "id": "dashboard",
+      "labelKey": "navigation.dashboard",
+      "path": "/dashboard",
+      "icon": "📊",
+      "requiresAuth": true
+    },
+    {
+      "id": "tasks",
+      "labelKey": "navigation.tasks",
+      "path": "/tasks",
+      "icon": "📝",
+      "requiresAuth": true
+    },
+    {
+      "id": "team",
+      "labelKey": "navigation.team",
+      "path": "/team",
+      "icon": "👥",
+      "requiresAuth": true
+    },
+    {
+      "id": "levels",
+      "labelKey": "navigation.levels",
+      "path": "/levels",
+      "icon": "💎",
+      "requiresAuth": true
+    },
+    {
+      "id": "wallet",
+      "labelKey": "navigation.wallet",
+      "path": "/wallet",
+      "icon": "💰",
+      "requiresAuth": true
+    }
+  ],
+  "adminNavigation": [
+    {
+      "id": "admin_dashboard",
+      "labelKey": "admin.navigation.dashboard",
+      "path": "/admin",
+      "icon": "📊"
+    },
+    {
+      "id": "admin_users",
+      "labelKey": "admin.navigation.users",
+      "path": "/admin/users",
+      "icon": "👥"
+    },
+    {
+      "id": "admin_deposits",
+      "labelKey": "admin.navigation.deposits",
+      "path": "/admin/deposits",
+      "icon": "💳"
+    },
+    {
+      "id": "admin_withdrawals",
+      "labelKey": "admin.navigation.withdrawals",
+      "path": "/admin/withdrawals",
+      "icon": "💸"
+    },
+    {
+      "id": "admin_tasks",
+      "labelKey": "admin.navigation.tasks",
+      "path": "/admin/tasks",
+      "icon": "📝"
+    }
+  ]
+}

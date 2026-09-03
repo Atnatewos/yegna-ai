@@ -1,0 +1,55 @@
+{
+  "version": "1.0.0",
+  "homeLabelKey": "breadcrumbs.home",
+  "separator": "/",
+  "routes": {
+    "/dashboard": [
+      { "labelKey": "breadcrumbs.dashboard", "path": "/dashboard" }
+    ],
+    "/tasks": [
+      { "labelKey": "breadcrumbs.tasks", "path": "/tasks" }
+    ],
+    "/tasks/[taskId]": [
+      { "labelKey": "breadcrumbs.tasks", "path": "/tasks" },
+      { "labelKey": "breadcrumbs.taskDetails", "path": null }
+    ],
+    "/team": [
+      { "labelKey": "breadcrumbs.dashboard", "path": "/dashboard" },
+      { "labelKey": "breadcrumbs.myTeam", "path": "/team" }
+    ],
+    "/team/tree": [
+      { "labelKey": "breadcrumbs.dashboard", "path": "/dashboard" },
+      { "labelKey": "breadcrumbs.myTeam", "path": "/team" },
+      { "labelKey": "breadcrumbs.teamTree", "path": "/team/tree" }
+    ],
+    "/levels": [
+      { "labelKey": "breadcrumbs.levels", "path": "/levels" }
+    ],
+    "/levels/upgrade": [
+      { "labelKey": "breadcrumbs.levels", "path": "/levels" },
+      { "labelKey": "breadcrumbs.upgrade", "path": "/levels/upgrade" }
+    ],
+    "/wallet": [
+      { "labelKey": "breadcrumbs.wallet", "path": "/wallet" }
+    ],
+    "/wallet/deposit": [
+      { "labelKey": "breadcrumbs.wallet", "path": "/wallet" },
+      { "labelKey": "breadcrumbs.deposit", "path": "/wallet/deposit" }
+    ],
+    "/wallet/withdraw": [
+      { "labelKey": "breadcrumbs.wallet", "path": "/wallet" },
+      { "labelKey": "breadcrumbs.withdraw", "path": "/wallet/withdraw" }
+    ],
+    "/admin": [
+      { "labelKey": "breadcrumbs.admin", "path": "/admin" }
+    ],
+    "/admin/users": [
+      { "labelKey": "breadcrumbs.admin", "path": "/admin" },
+      { "labelKey": "breadcrumbs.users", "path": "/admin/users" }
+    ],
+    "/admin/deposits": [
+      { "labelKey": "breadcrumbs.admin", "path": "/admin" },
+      { "labelKey": "breadcrumbs.deposits", "path": "/admin/deposits" }
+    ]
+  }
+}

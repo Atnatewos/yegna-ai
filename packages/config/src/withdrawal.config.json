@@ -1,0 +1,26 @@
+{
+  "version": "1.0.0",
+  "defaultWithdrawalConfig": {
+    "minimum": 100,
+    "maximum": 10000,
+    "feePercentage": 2,
+    "processingHours": 48,
+    "methods": [
+      {
+        "id": "telebirr",
+        "labelKey": "withdrawal.methods.telebirr",
+        "icon": "phone"
+      },
+      {
+        "id": "cbe_birr",
+        "labelKey": "withdrawal.methods.cbeBirr",
+        "icon": "bank"
+      },
+      {
+        "id": "bank_account",
+        "labelKey": "withdrawal.methods.bankAccount",
+        "icon": "building"
+      }
+    ]
+  }
+}

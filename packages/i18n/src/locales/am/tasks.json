@@ -1,0 +1,50 @@
+{
+  "tasks": {
+    "title": "የ AI ተግባራት",
+    "subtitle": "ቀጣይነት ያለው የAI ሞዴል ዳታ ማብራሪያ ፖርታል",
+    "searchPlaceholder": "ሥራዎችን ይፈልጉ...",
+    "loading": "ሥራዎችን በመጫን ላይ...",
+    "fetchError": "ሥራዎችን ማምጣት አልተሳካም",
+    "errorTitle": "ሥራዎችን በመጫን ላይ ስህተት",
+    "noTasksTitle": "ምንም ሥራዎች የሉም",
+    "noTasksDescription": "በአሁኑ ጊዜ ለደረጃዎ ምንም ሥራዎች የሉም።",
+    "reward": "ሽልማት",
+    "startTask": "ሥራ ጀምር",
+    "instructions": "የሥራ መመሪያዎች",
+    "submitTask": "የAI ማብራሪያዎችን አስገባ",
+    "submit": "አስገባ",
+    "cancel": "ሰርዝ",
+    "submitInfo": "እባክዎ በመመሪያው መሰረት ሥራውን ያጠናቅቁ።",
+    "yourAnswer": "መልስዎ",
+    "answerPlaceholder": "መልስዎን እዚህ ያስገቡ...",
+    "contentRequired": "እባክዎ መልስዎን ያቅርቡ",
+    "submitSuccess": "ሥራ ተረጋግጧል! ሽልማት ወደ ቦርሳ ተጨምሯል።",
+    "submitError": "ሥራውን ማስገባት አልተሳካም",
+    "taskNotFound": "ሥራው አልተገኘም",
+    "taskNotFoundDescription": "የፈለጉት ሥራ የለም።",
+    "alreadySubmitted": "አስቀድሞ ገብቷል",
+    "todayLimit": "የዛሬ ገደብ",
+    "completed": "ተጠናቋል",
+    "audioPreview": "የድምጽ ቅድመ እይታ ሕብረቁምፊ",
+    "selectAnnotation": "ትክክለኛ ማብራሪያ ይምረጡ",
+    "skipTask": "ስራ ዝለል",
+    "validating": "AI NLP በማረጋገጥ ላይ...",
+    "selectOption": "ከማስገባትዎ በፊት አንድ አማራጭ ይምረጡ",
+    "backToTasks": "ወደ ስራዎች ተመለስ",
+    "execute": "ፈጽም",
+    "types": {
+      "text": {
+        "label": "የአማርኛ ጽሑፍ እና NLP"
+      },
+      "image": {
+        "label": "የባህል ምስሎች ምስክርነት"
+      },
+      "file": {
+        "label": "የሰነድ ማረጋገጫ"
+      },
+      "voice": {
+        "label": "የአማርኛ ድምፅ ግልባጭ"
+      }
+    }
+  }
+}

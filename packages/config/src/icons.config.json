@@ -1,0 +1,315 @@
+{
+  "version": "1.0.0",
+  "iconLibrary": "lucide-react",
+  "icons": {
+    "dashboard": {
+      "name": "LayoutDashboard",
+      "size": 24
+    },
+    "tasks": {
+      "name": "FileText",
+      "size": 24
+    },
+    "team": {
+      "name": "Users",
+      "size": 24
+    },
+    "levels": {
+      "name": "Award",
+      "size": 24
+    },
+    "wallet": {
+      "name": "Wallet",
+      "size": 24
+    },
+    "settings": {
+      "name": "Settings",
+      "size": 24
+    },
+    "support": {
+      "name": "Headphones",
+      "size": 24
+    },
+    "logout": {
+      "name": "LogOut",
+      "size": 24
+    },
+    "search": {
+      "name": "Search",
+      "size": 20
+    },
+    "notification": {
+      "name": "Bell",
+      "size": 20
+    },
+    "profile": {
+      "name": "User",
+      "size": 24
+    },
+    "menu": {
+      "name": "Menu",
+      "size": 24
+    },
+    "close": {
+      "name": "X",
+      "size": 24
+    },
+    "chevronRight": {
+      "name": "ChevronRight",
+      "size": 16
+    },
+    "chevronLeft": {
+      "name": "ChevronLeft",
+      "size": 16
+    },
+    "chevronDown": {
+      "name": "ChevronDown",
+      "size": 16
+    },
+    "chevronUp": {
+      "name": "ChevronUp",
+      "size": 16
+    },
+    "plus": {
+      "name": "Plus",
+      "size": 20
+    },
+    "minus": {
+      "name": "Minus",
+      "size": 20
+    },
+    "check": {
+      "name": "Check",
+      "size": 20
+    },
+    "checkCircle": {
+      "name": "CheckCircle",
+      "size": 20
+    },
+    "alertCircle": {
+      "name": "AlertCircle",
+      "size": 20
+    },
+    "info": {
+      "name": "Info",
+      "size": 20
+    },
+    "warning": {
+      "name": "AlertTriangle",
+      "size": 20
+    },
+    "error": {
+      "name": "XCircle",
+      "size": 20
+    },
+    "upload": {
+      "name": "UploadCloud",
+      "size": 24
+    },
+    "download": {
+      "name": "Download",
+      "size": 20
+    },
+    "edit": {
+      "name": "Pencil",
+      "size": 16
+    },
+    "delete": {
+      "name": "Trash2",
+      "size": 16
+    },
+    "view": {
+      "name": "Eye",
+      "size": 16
+    },
+    "copy": {
+      "name": "Copy",
+      "size": 16
+    },
+    "share": {
+      "name": "Share2",
+      "size": 16
+    },
+    "refresh": {
+      "name": "RefreshCw",
+      "size": 16
+    },
+    "filter": {
+      "name": "Filter",
+      "size": 16
+    },
+    "sort": {
+      "name": "ArrowUpDown",
+      "size": 16
+    },
+    "calendar": {
+      "name": "Calendar",
+      "size": 16
+    },
+    "clock": {
+      "name": "Clock",
+      "size": 16
+    },
+    "phone": {
+      "name": "Phone",
+      "size": 24
+    },
+    "bank": {
+      "name": "Landmark",
+      "size": 24
+    },
+    "building": {
+      "name": "Building2",
+      "size": 24
+    },
+    "money": {
+      "name": "Banknote",
+      "size": 24
+    },
+    "trendingUp": {
+      "name": "TrendingUp",
+      "size": 20
+    },
+    "trendingDown": {
+      "name": "TrendingDown",
+      "size": 20
+    },
+    "users": {
+      "name": "Users",
+      "size": 24
+    },
+    "userPlus": {
+      "name": "UserPlus",
+      "size": 20
+    },
+    "userCheck": {
+      "name": "UserCheck",
+      "size": 20
+    },
+    "userX": {
+      "name": "UserX",
+      "size": 20
+    },
+    "lock": {
+      "name": "Lock",
+      "size": 16
+    },
+    "unlock": {
+      "name": "Unlock",
+      "size": 16
+    },
+    "shield": {
+      "name": "Shield",
+      "size": 24
+    },
+    "shieldCheck": {
+      "name": "ShieldCheck",
+      "size": 24
+    },
+    "star": {
+      "name": "Star",
+      "size": 16
+    },
+    "heart": {
+      "name": "Heart",
+      "size": 16
+    },
+    "flag": {
+      "name": "Flag",
+      "size": 16
+    },
+    "globe": {
+      "name": "Globe",
+      "size": 20
+    },
+    "language": {
+      "name": "Languages",
+      "size": 20
+    },
+    "loader": {
+      "name": "Loader2",
+      "size": 24,
+      "spin": true
+    },
+    "arrowRight": {
+      "name": "ArrowRight",
+      "size": 20
+    },
+    "arrowLeft": {
+      "name": "ArrowLeft",
+      "size": 20
+    },
+    "arrowUp": {
+      "name": "ArrowUp",
+      "size": 20
+    },
+    "arrowDown": {
+      "name": "ArrowDown",
+      "size": 20
+    },
+    "externalLink": {
+      "name": "ExternalLink",
+      "size": 16
+    },
+    "home": {
+      "name": "Home",
+      "size": 20
+    },
+    "file": {
+      "name": "File",
+      "size": 20
+    },
+    "fileText": {
+      "name": "FileText",
+      "size": 20
+    },
+    "image": {
+      "name": "Image",
+      "size": 20
+    },
+    "mic": {
+      "name": "Mic",
+      "size": 20
+    },
+    "award": {
+      "name": "Award",
+      "size": 24
+    },
+    "crown": {
+      "name": "Crown",
+      "size": 24
+    },
+    "target": {
+      "name": "Target",
+      "size": 20
+    },
+    "gift": {
+      "name": "Gift",
+      "size": 20
+    },
+    "sparkles": {
+      "name": "Sparkles",
+      "size": 20
+    },
+    "zap": {
+      "name": "Zap",
+      "size": 20
+    },
+    "activity": {
+      "name": "Activity",
+      "size": 20
+    },
+    "barChart": {
+      "name": "BarChart3",
+      "size": 20
+    },
+    "pieChart": {
+      "name": "PieChart",
+      "size": 20
+    },
+    "lineChart": {
+      "name": "LineChart",
+      "size": 20
+    }
+  }
+}

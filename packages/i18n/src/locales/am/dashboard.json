@@ -1,0 +1,57 @@
+{
+  "welcome": "እንኳን ደህና መጡ, {{name}}!",
+  "welcomeAmharic": "ሰላም, {{name}}!",
+  "todayDate": "ዛሬ {{date}} ነው",
+  "officialBadge": "ኦፊሴላዊ AI ዳታ ማሰልጠኛ አውታር",
+  "heroTitle": "የኢትዮጵያ የመጀመሪያውን AI በመግራት በየቀኑ በብር ይከፈሉ",
+  "heroSubtitle": "የአማርኛ ጽሑፎችን፣ የድምፅ መረጃዎችን እና ባህላዊ ምስሎችን በማረጋገጥ በየቀኑ ገቢዎን ያሳድጉ።",
+  "startTasks": "የዛሬ ስራዎችን ይጀምሩ",
+  "upgradeTier": "ደረጃ ያድጉ",
+  "readyWithdrawal": "ለፈጣን መውጣት ዝግጁ",
+  "tasksPerDay": "ሥራዎች / ቀን",
+  "etbPerTask": "ብር በሥራ",
+  "dailyCapacity": "የቀን አቅም:",
+  "passiveIncome": "የ 5 ደረጃ ተገብሮ ኔትወርክ ገቢ",
+  "trainAiEarn": "የአማርኛ AI ሞዴሎችን ያሰልጥኑ እና ወዲያውኑ ያግኙ",
+  "execute": "ፈጽም",
+  "taskCompletedActivity": "ስራ ተጠናቋል: የስሜት ምደባ",
+  "referralBonusActivity": "ደረጃ 1 የማጣቀሻ ጉርሻ (ማርታ ገ.)",
+  "depositApprovedActivity": "የቴሌብር ተቀማጭ ጸድቋል",
+  "justNow": "አሁን",
+  "hourAgo": "ከ1 ሰዓት በፊት",
+  "stats": {
+    "balance": "የተቀመጠ ቀሪ ሒሳብ",
+    "todayEarnings": "የዛሬ ገቢ",
+    "teamMembers": "የቡድን አባላት",
+    "currentLevel": "የአሁኑ የአባልነት ደረጃ",
+    "currentTier": "የአሁኑ የአባልነት ደረጃ",
+    "totalEarned": "ጠቅላላ ገቢ",
+    "tasksCompleted": "ዛሬ የተጠናቀቁ ተግባራት",
+    "teamCommission": "አጠቃላይ የኮሚሽን ገቢ"
+  },
+  "todayProgress": {
+    "title": "የዛሬ AI ማሰልጠኛ እድገት",
+    "tasksCompleted": "{{completed}}/{{total}} ሥራዎች",
+    "earned": "ገቢ: {{earned}}/{{totalEarned}} ብር",
+    "aiLearning": "Yegna AI ትምህርት",
+    "remaining": "ቀሪ: {{count}} ሥራዎች"
+  },
+  "availableTasks": {
+    "title": "የሚገኙ የማሰልጠኛ ሥራዎች",
+    "viewAll": "ሁሉንም ሥራዎች ይመልከቱ",
+    "noTasks": "ለደረጃዎ ምንም ሥራዎች የሉም"
+  },
+  "recentActivity": {
+    "title": "የቅርብ ጊዜ እንቅስቃሴ",
+    "viewAll": "ሁሉንም እንቅስቃሴ ይመልከቱ",
+    "noActivity": "ምንም የቅርብ ጊዜ እንቅስቃሴ የለም"
+  },
+  "quickActions": {
+    "title": "ፈጣን እርምጃዎች",
+    "startTask": "ሥራ ጀምር",
+    "viewTeam": "ቡድን ይመልከቱ",
+    "deposit": "ተቀማጭ ገንዘብ",
+    "withdraw": "ገንዘብ አውጣ",
+    "upgrade": "ደረጃ አሻሽል"
+  }
+}

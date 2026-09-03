@@ -1,0 +1,31 @@
+{
+  "version": "1.0.0",
+  "currency": "ETB",
+  "defaultPaymentMethods": [
+    {
+      "id": "telebirr",
+      "labelKey": "payment.methods.telebirr.label",
+      "number": "0912345678",
+      "name": "Yegna AI PLC",
+      "icon": "phone",
+      "descriptionKey": "payment.methods.telebirr.description"
+    },
+    {
+      "id": "cbe_birr",
+      "labelKey": "payment.methods.cbeBirr.label",
+      "number": "0987654321",
+      "name": "Yegna AI PLC",
+      "icon": "bank",
+      "descriptionKey": "payment.methods.cbeBirr.description"
+    },
+    {
+      "id": "bank_transfer",
+      "labelKey": "payment.methods.bankTransfer.label",
+      "bank": "Commercial Bank of Ethiopia",
+      "account": "1000123456789",
+      "name": "Yegna AI PLC",
+      "icon": "building",
+      "descriptionKey": "payment.methods.bankTransfer.description"
+    }
+  ]
+}

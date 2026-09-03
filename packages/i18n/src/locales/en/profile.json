@@ -1,0 +1,13 @@
+{
+  "profile": {
+    "title": "My Profile",
+    "editTitle": "Edit Profile",
+    "fullName": "Full Name",
+    "phone": "Phone Number",
+    "email": "Email Address",
+    "save": "Save Changes",
+    "saving": "Saving...",
+    "updateSuccess": "Profile updated successfully",
+    "updateError": "Failed to update profile"
+  }
+}

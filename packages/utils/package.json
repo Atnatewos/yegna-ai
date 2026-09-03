@@ -1,0 +1,11 @@
+{
+  "name": "@yegna/utils",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/index.js",
+  "description": "Yegna AI Shared Utilities Package",
+  "dependencies": {
+    "dayjs": "^1.11.10",
+    "lodash": "^4.17.21"
+  }
+}

@@ -1,0 +1,118 @@
+/**
+ * File: apps/web/src/styles/components/button.css
+ * Yegna AI - Button Component Styles
+ */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  border-radius: 12px;
+  transition: all var(--transition-fast);
+  text-decoration: none;
+  white-space: nowrap;
+  font-family: inherit;
+  font-size: 12px;
+  padding: 10px 16px;
+}
+
+.button:active {
+  transform: scale(0.97);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Primary */
+.button-primary {
+  background: #059669;
+  color: white;
+  box-shadow: var(--shadow-emerald);
+}
+
+.button-primary:hover:not(:disabled) {
+  background: #047857;
+  box-shadow: var(--shadow-emerald-lg);
+}
+
+/* Yellow Accent */
+.button-accent {
+  background: #FACC15;
+  color: #0F172A;
+  font-weight: 800;
+  box-shadow: var(--shadow-md);
+}
+
+.button-accent:hover {
+  background: #FDE047;
+}
+
+/* Ghost White (on dark) */
+.button-ghost-white {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.button-ghost-white:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Outline */
+.button-outline {
+  background: white;
+  color: #475569;
+  border: 1px solid #E2E8F0;
+}
+
+.button-outline:hover {
+  background: #F8FAFC;
+}
+
+/* Dark */
+.button-dark {
+  background: #0F172A;
+  color: white;
+}
+
+.button-dark:hover {
+  background: #1E293B;
+}
+
+/* Sizes */
+.button-sm {
+  padding: 6px 12px;
+  font-size: 12px;
+}
+
+.button-md {
+  padding: 10px 20px;
+  font-size: 14px;
+}
+
+.button-lg {
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 800;
+  border-radius: 16px;
+}
+
+/* Full width */
+.button-full {
+  width: 100%;
+}
+
+/* Icon button */
+.button-icon {
+  padding: 8px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

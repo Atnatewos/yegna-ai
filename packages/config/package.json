@@ -1,0 +1,10 @@
+{
+  "name": "@yegna/config",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "description": "Yegna AI Configuration Package",
+  "dependencies": {
+    "fs-extra": "^11.2.0"
+  }
+}

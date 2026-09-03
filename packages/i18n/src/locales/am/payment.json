@@ -1,0 +1,25 @@
+{
+  "payment": {
+    "methods": {
+      "telebirr": {
+        "label": "ቴሌብር",
+        "description": "በቴሌብር የሞባይል ገንዘብ ይክፈሉ"
+      },
+      "cbeBirr": {
+        "label": "ሲቢኢ ብር",
+        "description": "በሲቢኢ ብር የሞባይል ባንክ ይክፈሉ"
+      },
+      "bankTransfer": {
+        "label": "የባንክ ዝውውር",
+        "description": "ቀጥታ የባንክ ዝውውር"
+      }
+    }
+  },
+  "withdrawal": {
+    "methods": {
+      "telebirr": "ቴሌብር",
+      "cbeBirr": "ሲቢኢ ብር",
+      "bankAccount": "የባንክ ሂሳብ"
+    }
+  }
+}

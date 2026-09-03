@@ -1,0 +1,74 @@
+{
+  "version": "1.0.0",
+  "taskTypes": [
+    {
+      "id": "text",
+      "labelKey": "tasks.types.text.label",
+      "icon": "📝",
+      "minWords": 50,
+      "maxWords": 500,
+      "descriptionKey": "tasks.types.text.description"
+    },
+    {
+      "id": "image",
+      "labelKey": "tasks.types.image.label",
+      "icon": "🖼️",
+      "maxFileSize": 5242880,
+      "allowedFormats": ["jpg", "jpeg", "png", "webp"],
+      "descriptionKey": "tasks.types.image.description"
+    },
+    {
+      "id": "file",
+      "labelKey": "tasks.types.file.label",
+      "icon": "📄",
+      "maxFileSize": 10485760,
+      "allowedFormats": ["pdf", "doc", "docx", "txt"],
+      "descriptionKey": "tasks.types.file.description"
+    },
+    {
+      "id": "voice",
+      "labelKey": "tasks.types.voice.label",
+      "icon": "🎤",
+      "maxDuration": 60,
+      "allowedFormats": ["mp3", "wav", "m4a"],
+      "descriptionKey": "tasks.types.voice.description"
+    }
+  ],
+  "taskTemplates": [
+    {
+      "id": "write_amharic",
+      "type": "text",
+      "titleKey": "tasks.templates.writeAmharic.title",
+      "descriptionKey": "tasks.templates.writeAmharic.description",
+      "promptKey": "tasks.templates.writeAmharic.prompt"
+    },
+    {
+      "id": "ethiopian_culture",
+      "type": "text",
+      "titleKey": "tasks.templates.ethiopianCulture.title",
+      "descriptionKey": "tasks.templates.ethiopianCulture.description",
+      "promptKey": "tasks.templates.ethiopianCulture.prompt"
+    },
+    {
+      "id": "ethiopian_food",
+      "type": "image",
+      "titleKey": "tasks.templates.ethiopianFood.title",
+      "descriptionKey": "tasks.templates.ethiopianFood.description",
+      "promptKey": "tasks.templates.ethiopianFood.prompt"
+    },
+    {
+      "id": "describe_city",
+      "type": "text",
+      "titleKey": "tasks.templates.describeCity.title",
+      "descriptionKey": "tasks.templates.describeCity.description",
+      "promptKey": "tasks.templates.describeCity.prompt"
+    },
+    {
+      "id": "product_review",
+      "type": "text",
+      "titleKey": "tasks.templates.productReview.title",
+      "descriptionKey": "tasks.templates.productReview.description",
+      "promptKey": "tasks.templates.productReview.prompt"
+    }
+  ]
+}

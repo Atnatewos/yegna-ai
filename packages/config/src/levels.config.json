@@ -1,0 +1,160 @@
+{
+  "version": "1.0.0",
+  "currency": "ETB",
+  "levels": [
+    {
+      "id": 0,
+      "nameKey": "levels.intern.name",
+      "deposit": 0,
+      "tasksPerDay": 5,
+      "incomePerTask": 12,
+      "dailyIncome": 60,
+      "monthlyIncome": 180,
+      "color": "#6B7280",
+      "icon": "intern",
+      "benefitsKeys": [
+        "levels.benefits.basicAccess",
+        "levels.benefits.standardSupport"
+      ]
+    },
+    {
+      "id": 1,
+      "nameKey": "levels.d1.name",
+      "deposit": 1600,
+      "tasksPerDay": 5,
+      "incomePerTask": 12,
+      "dailyIncome": 60,
+      "monthlyIncome": 1800,
+      "color": "#10B981",
+      "icon": "d1",
+      "benefitsKeys": [
+        "levels.benefits.basicAccess",
+        "levels.benefits.referralCommissions",
+        "levels.benefits.prioritySupport"
+      ]
+    },
+    {
+      "id": 2,
+      "nameKey": "levels.d2.name",
+      "deposit": 4000,
+      "tasksPerDay": 5,
+      "incomePerTask": 30,
+      "dailyIncome": 150,
+      "monthlyIncome": 4500,
+      "color": "#3B82F6",
+      "icon": "d2",
+      "benefitsKeys": [
+        "levels.benefits.higherRewards",
+        "levels.benefits.referralCommissions",
+        "levels.benefits.teamBuilding",
+        "levels.benefits.prioritySupport"
+      ]
+    },
+    {
+      "id": 3,
+      "nameKey": "levels.d3.name",
+      "deposit": 7200,
+      "tasksPerDay": 5,
+      "incomePerTask": 54,
+      "dailyIncome": 270,
+      "monthlyIncome": 8100,
+      "color": "#8B5CF6",
+      "icon": "d3",
+      "benefitsKeys": [
+        "levels.benefits.higherRewards",
+        "levels.benefits.referralCommissions",
+        "levels.benefits.teamBuilding",
+        "levels.benefits.prioritySupport"
+      ]
+    },
+    {
+      "id": 4,
+      "nameKey": "levels.d4.name",
+      "deposit": 16000,
+      "tasksPerDay": 5,
+      "incomePerTask": 120,
+      "dailyIncome": 600,
+      "monthlyIncome": 18000,
+      "color": "#F59E0B",
+      "icon": "d4",
+      "benefitsKeys": [
+        "levels.benefits.higherRewards",
+        "levels.benefits.referralCommissions",
+        "levels.benefits.teamBuilding",
+        "levels.benefits.vipSupport"
+      ]
+    },
+    {
+      "id": 5,
+      "nameKey": "levels.d5.name",
+      "deposit": 36000,
+      "tasksPerDay": 5,
+      "incomePerTask": 300,
+      "dailyIncome": 1500,
+      "monthlyIncome": 45000,
+      "color": "#EF4444",
+      "icon": "d5",
+      "benefitsKeys": [
+        "levels.benefits.premiumRewards",
+        "levels.benefits.referralCommissions",
+        "levels.benefits.teamBuilding",
+        "levels.benefits.vipSupport"
+      ]
+    },
+    {
+      "id": 6,
+      "nameKey": "levels.d6.name",
+      "deposit": 90000,
+      "tasksPerDay": 10,
+      "incomePerTask": 385,
+      "dailyIncome": 3850,
+      "monthlyIncome": 115500,
+      "color": "#EC4899",
+      "icon": "d6",
+      "benefitsKeys": [
+        "levels.benefits.premiumRewards",
+        "levels.benefits.referralCommissions",
+        "levels.benefits.teamBuilding",
+        "levels.benefits.vipSupport",
+        "levels.benefits.exclusiveTasks"
+      ]
+    },
+    {
+      "id": 7,
+      "nameKey": "levels.d7.name",
+      "deposit": 140000,
+      "tasksPerDay": 20,
+      "incomePerTask": 275,
+      "dailyIncome": 5500,
+      "monthlyIncome": 165000,
+      "color": "#14B8A6",
+      "icon": "d7",
+      "benefitsKeys": [
+        "levels.benefits.eliteRewards",
+        "levels.benefits.referralCommissions",
+        "levels.benefits.teamBuilding",
+        "levels.benefits.vipSupport",
+        "levels.benefits.exclusiveTasks"
+      ]
+    },
+    {
+      "id": 8,
+      "nameKey": "levels.d8.name",
+      "deposit": 330000,
+      "tasksPerDay": 20,
+      "incomePerTask": 625,
+      "dailyIncome": 12500,
+      "monthlyIncome": 375000,
+      "color": "#6366F1",
+      "icon": "d8",
+      "benefitsKeys": [
+        "levels.benefits.eliteRewards",
+        "levels.benefits.referralCommissions",
+        "levels.benefits.teamBuilding",
+        "levels.benefits.vipSupport",
+        "levels.benefits.exclusiveTasks",
+        "levels.benefits.masterTrainer"
+      ]
+    }
+  ]
+}

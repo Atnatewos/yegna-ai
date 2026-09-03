@@ -1,0 +1,50 @@
+{
+  "tasks": {
+    "title": "AI Tasks",
+    "subtitle": "Continuous AI Model Dataset Annotation Portal",
+    "searchPlaceholder": "Search tasks...",
+    "loading": "Loading tasks...",
+    "fetchError": "Failed to fetch tasks",
+    "errorTitle": "Error Loading Tasks",
+    "noTasksTitle": "No Tasks Available",
+    "noTasksDescription": "There are no tasks available for your level at the moment.",
+    "reward": "Reward",
+    "startTask": "Start Task",
+    "instructions": "Task Instructions",
+    "submitTask": "Submit AI Annotations",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "submitInfo": "Please complete the task according to the instructions.",
+    "yourAnswer": "Your Answer",
+    "answerPlaceholder": "Enter your answer here...",
+    "contentRequired": "Please provide your answer",
+    "submitSuccess": "Task verified! Reward added to wallet.",
+    "submitError": "Failed to submit task",
+    "taskNotFound": "Task Not Found",
+    "taskNotFoundDescription": "The task you are looking for does not exist.",
+    "alreadySubmitted": "Already Submitted",
+    "todayLimit": "Today's Limit",
+    "completed": "Completed",
+    "audioPreview": "Audio Preview String",
+    "selectAnnotation": "Select Accurate Annotation",
+    "skipTask": "Skip Task",
+    "validating": "Validating AI NLP...",
+    "selectOption": "Please select an option before submitting",
+    "backToTasks": "Back to Tasks",
+    "execute": "Execute",
+    "types": {
+      "text": {
+        "label": "Amharic Text & NLP"
+      },
+      "image": {
+        "label": "Cultural Image Tagging"
+      },
+      "file": {
+        "label": "Data Document Verification"
+      },
+      "voice": {
+        "label": "Amharic Speech Audio"
+      }
+    }
+  }
+}

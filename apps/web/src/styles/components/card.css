@@ -1,0 +1,232 @@
+/**
+ * File: apps/web/src/styles/components/card.css
+ * Yegna AI - Card Component Styles
+ */
+
+.card {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #E2E8F0;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+}
+
+.card-hover {
+  cursor: pointer;
+}
+
+.card-hover:hover {
+  border-color: #CBD5E1;
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.card-padding {
+  padding: 20px;
+}
+
+/* Hero Banner Card */
+.hero-banner {
+  position: relative;
+  border-radius: 24px;
+  background: linear-gradient(to right, #065F46, #047857, #0F766E);
+  color: white;
+  padding: 24px;
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+}
+
+.hero-banner::after {
+  content: '';
+  position: absolute;
+  right: -32px;
+  bottom: -32px;
+  width: 256px;
+  height: 256px;
+  background: #FACC15;
+  opacity: 0.1;
+  border-radius: 50%;
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.hero-banner-content {
+  position: relative;
+  z-index: 10;
+  max-width: 672px;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(250, 204, 21, 0.2);
+  border: 1px solid rgba(250, 204, 21, 0.3);
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #FDE047;
+  margin-bottom: 12px;
+}
+
+.hero-title {
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.hero-description {
+  color: #E2E8F0;
+  font-size: 14px;
+  margin-top: 8px;
+  line-height: 1.6;
+}
+
+.hero-actions {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Stat Card */
+.stat-card {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid #E2E8F0;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.stat-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #64748B;
+  margin-bottom: 8px;
+}
+
+.stat-card-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.stat-card-icon {
+  padding: 8px;
+  border-radius: 12px;
+}
+
+.stat-card-value {
+  font-size: 24px;
+  font-weight: 900;
+  color: #0F172A;
+}
+
+.stat-card-footer {
+  margin-top: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Progress Bar */
+.progress-track {
+  width: 100%;
+  background: #F1F5F9;
+  border-radius: 9999px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  background: #059669;
+  height: 100%;
+  border-radius: 9999px;
+  transition: all 300ms ease;
+}
+
+/* Tier Card */
+.tier-card {
+  position: relative;
+  border-radius: 24px;
+  background: white;
+  border: 1px solid #E2E8F0;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 200ms ease;
+}
+
+.tier-card:hover {
+  border-color: #CBD5E1;
+  box-shadow: var(--shadow-md);
+}
+
+.tier-card-active {
+  border-color: #059669;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2), var(--shadow-xl);
+}
+
+.tier-active-badge {
+  position: absolute;
+  top: -12px;
+  right: 24px;
+  background: #059669;
+  color: white;
+  font-weight: 800;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  box-shadow: var(--shadow-emerald);
+}
+
+.tier-badge {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 8px;
+  display: inline-block;
+}
+
+.tier-deposit {
+  font-size: 30px;
+  font-weight: 900;
+  color: #0F172A;
+  margin-top: 16px;
+}
+
+.tier-deposit-label {
+  font-size: 12px;
+  color: #64748B;
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+.tier-details {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 12px;
+}
+
+.tier-detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.tier-detail-row:last-child {
+  border-bottom: none;
+}

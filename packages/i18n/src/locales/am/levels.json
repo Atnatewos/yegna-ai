@@ -1,0 +1,71 @@
+{
+  "levels": {
+    "title": "የአባልነት ደረጃዎች",
+    "subtitle": "ከፍተኛ የአባልነት ደረጃዎች ከፍተኛ የሥራ ገደቦችን፣ ፕሪሚየም የሽልማት ተመኖችን እና የተፋጠነ የቀን ገቢን ይከፍታሉ።",
+    "officialTiers": "ኦፊሴላዊ VIP ደረጃዎች",
+    "activePlan": "ንቁ እቅድ",
+    "popular": "ታዋቂ",
+    "free": "ነጻ",
+    "tasksPerDay": "ሥራዎች / ቀን",
+    "perTask": "በሥራ",
+    "dailyIncome": "የቀን ገቢ",
+    "monthlyIncome": "የወር ገቢ",
+    "dailyTaskLimit": "የቀን ተግባራት ገደብ",
+    "incomePerTask": "ገቢ / በሥራ",
+    "dailyReturn": "የቀን ገቢ",
+    "monthlyProjected": "የወር ትንበያ",
+    "current": "የአሁን ደረጃ",
+    "currentTier": "የአሁን ደረጃ",
+    "freeTier": "ነጻ ደረጃ",
+    "upgrade": "ወደዚህ ደረጃ አሻሽል",
+    "upgradeTo": "አሻሽል ወደ",
+    "upgradeTitle": "ወደ {{level}} አሻሽል",
+    "depositAmount": "የሚያስፈልግ ተቀማጭ",
+    "deposit": "ተቀማጭ",
+    "benefits": "ጥቅሞች",
+    "cancel": "ሰርዝ",
+    "proceedToDeposit": "ወደ ተቀማጭ ይቀጥሉ",
+    "levelNotFound": "ደረጃው አልተገኘም",
+    "levelNotFoundDescription": "የፈለጉት ደረጃ የለም።",
+    "intern": {
+      "name": "ኢንተርን (ነፃ)"
+    },
+    "d1": {
+      "name": "ዲ 1 (D1)"
+    },
+    "d2": {
+      "name": "ዲ 2 (D2)"
+    },
+    "d3": {
+      "name": "ዲ 3 (D3)"
+    },
+    "d4": {
+      "name": "ዲ 4 (D4)"
+    },
+    "d5": {
+      "name": "ዲ 5 (D5)"
+    },
+    "d6": {
+      "name": "ዲ 6 (D6)"
+    },
+    "d7": {
+      "name": "ዲ 7 (D7)"
+    },
+    "d8": {
+      "name": "ዲ 8 (D8 Master)"
+    },
+    "benefitItems": {
+      "basicAccess": "መሰረታዊ የሥራ መዳረሻ",
+      "standardSupport": "መደበኛ ድጋፍ",
+      "higherRewards": "ከፍተኛ የሥራ ሽልማት",
+      "referralCommissions": "የማጣቀሻ ኮሚሽኖች",
+      "teamBuilding": "ቡድን መገንባት",
+      "prioritySupport": "ቅድሚያ የሚሰጠው ድጋፍ",
+      "vipSupport": "የቪአይፒ ድጋፍ",
+      "premiumRewards": "የፕሪሚየም የሥራ ሽልማት",
+      "exclusiveTasks": "ልዩ ሥራዎች",
+      "eliteRewards": "የኤሊት የሥራ ሽልማት",
+      "masterTrainer": "ዋና AI አሰልጣኝ ደረጃ"
+    }
+  }
+}

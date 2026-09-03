@@ -1,0 +1,97 @@
+/**
+ * File: apps/web/src/styles/components/responsive.css
+ * Yegna AI - Responsive Styles
+ * 
+ * Mobile and tablet responsive design.
+ */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .dashboard-layout {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    min-height: auto;
+    position: static;
+    flex-direction: row;
+    overflow-x: auto;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  .sidebar-nav {
+    flex-direction: row;
+  }
+  
+  .dashboard-main {
+    max-width: 100%;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .header-nav {
+    display: none;
+  }
+  
+  .header-container {
+    padding: 0 var(--spacing-md);
+  }
+  
+  .sidebar {
+    padding: var(--spacing-sm);
+  }
+  
+  .sidebar-link {
+    padding: var(--spacing-sm);
+    font-size: var(--font-size-sm);
+  }
+  
+  .sidebar-link span {
+    display: none;
+  }
+  
+  .dashboard-main {
+    padding: var(--spacing-md);
+  }
+  
+  .container {
+    padding: 0 var(--spacing-md);
+  }
+  
+  h1 { font-size: var(--font-size-2xl); }
+  h2 { font-size: var(--font-size-xl); }
+  h3 { font-size: var(--font-size-lg); }
+  
+  .card {
+    padding: var(--spacing-md);
+  }
+  
+  .table th,
+  .table td {
+    padding: var(--spacing-sm);
+    font-size: var(--font-size-xs);
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+  .header-logo {
+    font-size: var(--font-size-lg);
+  }
+  
+  .header-actions {
+    gap: var(--spacing-xs);
+  }
+  
+  .button {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-sm);
+  }
+  
+  .dashboard-main {
+    padding: var(--spacing-sm);
+  }
+}

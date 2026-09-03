@@ -1,0 +1,71 @@
+{
+  "levels": {
+    "title": "Membership Tiers",
+    "subtitle": "Higher membership tiers unlock higher task limits, premium reward rates, and accelerated daily return.",
+    "officialTiers": "Official VIP Tiers",
+    "activePlan": "Active Plan",
+    "popular": "Popular",
+    "free": "Free",
+    "tasksPerDay": "Tasks / Day",
+    "perTask": "per task",
+    "dailyIncome": "daily income",
+    "monthlyIncome": "monthly income",
+    "dailyTaskLimit": "Daily Task Limit",
+    "incomePerTask": "Income / Task",
+    "dailyReturn": "Daily Return",
+    "monthlyProjected": "Monthly Projected",
+    "current": "Current Level",
+    "currentTier": "Current Tier",
+    "freeTier": "Free Tier",
+    "upgrade": "Upgrade to this Level",
+    "upgradeTo": "Upgrade to",
+    "upgradeTitle": "Upgrade to {{level}}",
+    "depositAmount": "Required Deposit",
+    "deposit": "Deposit",
+    "benefits": "Benefits",
+    "cancel": "Cancel",
+    "proceedToDeposit": "Proceed to Deposit",
+    "levelNotFound": "Level Not Found",
+    "levelNotFoundDescription": "The level you are looking for does not exist.",
+    "intern": {
+      "name": "Intern (Free)"
+    },
+    "d1": {
+      "name": "D1 Member"
+    },
+    "d2": {
+      "name": "D2 Executive"
+    },
+    "d3": {
+      "name": "D3 Senior"
+    },
+    "d4": {
+      "name": "D4 Leader"
+    },
+    "d5": {
+      "name": "D5 Director"
+    },
+    "d6": {
+      "name": "D6 Ambassador"
+    },
+    "d7": {
+      "name": "D7 Partner"
+    },
+    "d8": {
+      "name": "D8 Master Elite"
+    },
+    "benefitItems": {
+      "basicAccess": "Basic task access",
+      "standardSupport": "Standard support",
+      "higherRewards": "Higher task rewards",
+      "referralCommissions": "Referral commissions",
+      "teamBuilding": "Team building",
+      "prioritySupport": "Priority support",
+      "vipSupport": "VIP support",
+      "premiumRewards": "Premium task rewards",
+      "exclusiveTasks": "Exclusive tasks",
+      "eliteRewards": "Elite task rewards",
+      "masterTrainer": "Master AI Trainer status"
+    }
+  }
+}

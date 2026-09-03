@@ -1,0 +1,13 @@
+{
+  "profile": {
+    "title": "የእኔ መገለጫ",
+    "editTitle": "መገለጫ አስተካክል",
+    "fullName": "ሙሉ ስም",
+    "phone": "ስልክ ቁጥር",
+    "email": "ኢሜይል",
+    "save": "ለውጦችን አስቀምጥ",
+    "saving": "በማስቀመጥ ላይ...",
+    "updateSuccess": "መገለጫ በተሳካ ሁኔታ ተዘምኗል",
+    "updateError": "መገለጫን ማዘመን አልተሳካም"
+  }
+}

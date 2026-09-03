@@ -1,0 +1,57 @@
+{
+  "welcome": "Welcome back, {{name}}!",
+  "welcomeAmharic": "ሰላም, {{name}}!",
+  "todayDate": "Today is {{date}}",
+  "officialBadge": "Official AI Data Training Network",
+  "heroTitle": "Earn ETB Daily by Training Ethiopia's Primary AI Model",
+  "heroSubtitle": "Complete simple NLP tagging, voice transcriptions, and cultural datasets to empower national artificial intelligence.",
+  "startTasks": "Start Today's Tasks",
+  "upgradeTier": "Upgrade Tier",
+  "readyWithdrawal": "Ready for instant withdrawal",
+  "tasksPerDay": "Tasks / Day",
+  "etbPerTask": "ETB per task",
+  "dailyCapacity": "Daily Capacity:",
+  "passiveIncome": "5-Level Passive Network Income",
+  "trainAiEarn": "Train Amharic AI models and earn instantly",
+  "execute": "Execute",
+  "taskCompletedActivity": "Task Completed: Sentiment Classification",
+  "referralBonusActivity": "Level 1 Referral Bonus (Marta G.)",
+  "depositApprovedActivity": "Telebirr Deposit Approved",
+  "justNow": "Just now",
+  "hourAgo": "1 hour ago",
+  "stats": {
+    "balance": "Wallet Balance",
+    "todayEarnings": "Today's Earnings",
+    "teamMembers": "Team Members",
+    "currentLevel": "Current Membership",
+    "currentTier": "Current Membership",
+    "totalEarned": "Total Earned",
+    "tasksCompleted": "Tasks Completed Today",
+    "teamCommission": "Total Team Commission"
+  },
+  "todayProgress": {
+    "title": "Today's AI Training Progress",
+    "tasksCompleted": "{{completed}}/{{total}} Tasks",
+    "earned": "Earned: {{earned}}/{{totalEarned}} ETB",
+    "aiLearning": "Yegna AI Learning",
+    "remaining": "Remaining: {{count}} tasks"
+  },
+  "availableTasks": {
+    "title": "Available Training Tasks",
+    "viewAll": "View All Tasks",
+    "noTasks": "No tasks available for your level"
+  },
+  "recentActivity": {
+    "title": "Recent Activity",
+    "viewAll": "View All Activity",
+    "noActivity": "No recent activity"
+  },
+  "quickActions": {
+    "title": "Quick Actions",
+    "startTask": "Start Task",
+    "viewTeam": "View Team",
+    "deposit": "Deposit",
+    "withdraw": "Withdraw",
+    "upgrade": "Upgrade Level"
+  }
+}

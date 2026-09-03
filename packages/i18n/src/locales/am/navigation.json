@@ -1,0 +1,25 @@
+{
+  "navigation": {
+    "dashboard": "ዳሽቦርድ",
+    "tasks": "ሥራዎች",
+    "team": "ቡድኔ",
+    "levels": "ደረጃዎች",
+    "wallet": "የገንዘብ ቦርሳ"
+  },
+  "breadcrumbs": {
+    "home": "መነሻ",
+    "dashboard": "ዳሽቦርድ",
+    "tasks": "ሥራዎች",
+    "taskDetails": "የሥራ ዝርዝር",
+    "myTeam": "ቡድኔ",
+    "teamTree": "የቡድን ዛፍ",
+    "levels": "ደረጃዎች",
+    "upgrade": "ማሻሻል",
+    "wallet": "የገንዘብ ቦርሳ",
+    "deposit": "ተቀማጭ ገንዘብ",
+    "withdraw": "ገንዘብ ማውጣት",
+    "admin": "አስተዳዳሪ",
+    "users": "ተጠቃሚዎች",
+    "deposits": "ተቀማጭ ገንዘቦች"
+  }
+}

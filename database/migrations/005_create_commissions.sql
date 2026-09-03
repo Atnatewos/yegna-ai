@@ -26,20 +26,15 @@ CREATE TABLE referral_tree (
     UNIQUE(user_id, referrer_id, level)
 );
 
--- Create index on user_id for commissions
+-- Standard indexes for basic lookups
 CREATE INDEX idx_commission_transactions_user_id ON commission_transactions(user_id);
-
--- Create index on from_user_id for commissions
 CREATE INDEX idx_commission_transactions_from_user_id ON commission_transactions(from_user_id);
-
--- Create index on commission_type
 CREATE INDEX idx_commission_transactions_type ON commission_transactions(commission_type);
-
--- Create index on referral tree user_id
 CREATE INDEX idx_referral_tree_user_id ON referral_tree(user_id);
-
--- Create index on referral tree referrer_id
 CREATE INDEX idx_referral_tree_referrer_id ON referral_tree(referrer_id);
-
--- Create index on referral tree level
 CREATE INDEX idx_referral_tree_level ON referral_tree(level);
+
+-- CRITICAL PERFORMANCE: Composite indexes for fast tree traversal and history sorting
+CREATE INDEX idx_referral_tree_user_level ON referral_tree(user_id, level);
+CREATE INDEX idx_referral_tree_referrer_level ON referral_tree(referrer_id, level);
+CREATE INDEX idx_commission_transactions_created ON commission_transactions(created_at DESC);

@@ -2,7 +2,8 @@
  * File: apps/web/next.config.js
  * Yegna AI - Next.js Configuration
  * 
- * Configures Next.js for the Yegna AI frontend application.
+ * Configures Next.js for the Yegna AI frontend application with 
+ * strict security headers and optimized build settings.
  */
 
 const nextConfig = {
@@ -19,17 +20,22 @@ const nextConfig = {
   // Environment variables exposed to the browser
   env: {
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api'
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api'
   },
   
   // Image optimization configuration
   images: {
-    domains: [
-      'res.cloudinary.com'
-    ]
+    domains: ['res.cloudinary.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        pathname: '/**',
+      },
+    ],
   },
   
-  // Headers for security
+  // Security headers applied to all routes
   async headers() {
     return [
       {
@@ -50,6 +56,14 @@ const nextConfig = {
           {
             key: 'X-XSS-Protection',
             value: '1; mode=block'
+          },
+          {
+            key: 'Content-Security-Policy',
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://res.cloudinary.com; font-src 'self' data:; connect-src 'self' https://res.cloudinary.com;"
+          },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()'
           }
         ]
       }

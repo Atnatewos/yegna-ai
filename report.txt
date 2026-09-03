@@ -1,0 +1,1464 @@
+# 🏗️ Yegna AI (የኛ AI) Platform - Complete Architecture Documentation
+
+## Prepared for: Ai chat bots 
+developer: Atnatewos Getasew (Theron)
+repository: https://github.com/Atnatewos/yegna-ai 
+
+---
+
+# TABLE OF CONTENTS
+
+1. [Project Overview](#1-project-overview)
+2. [High-Level Architecture](#2-high-level-architecture)
+3. [Monorepo Structure](#3-monorepo-structure)
+4. [Frontend Architecture (Next.js)](#4-frontend-architecture)
+5. [Backend Architecture (Express.js)](#5-backend-architecture)
+6. [Database Architecture (PostgreSQL)](#6-database-architecture)
+7. [Configuration System](#7-configuration-system)
+8. [Internationalization (i18n)](#8-internationalization)
+9. [Authentication & Security](#9-authentication--security)
+10. [Business Logic Systems](#10-business-logic-systems)
+11. [MLM Referral System](#11-mlm-referral-system)
+12. [Task System](#12-task-system)
+13. [Wallet & Payment System](#13-wallet--payment-system)
+14. [Admin System](#14-admin-system)
+15. [UI/UX Design System](#15-uiux-design-system)
+16. [API Endpoints Reference](#16-api-endpoints-reference)
+17. [State Management](#17-state-management)
+18. [Deployment Architecture](#18-deployment-architecture)
+19. [Environment Variables](#19-environment-variables)
+20. [Known Issues & Next Steps](#20-known-issues--next-steps)
+
+---
+
+# 1. PROJECT OVERVIEW
+
+## 1.1 What is Yegna AI?
+
+Yegna AI (የኛ AI - meaning "Our AI" in Amharic) is an Ethiopian AI training platform that combines:
+
+- **Crowdsourced AI Training**: Users complete simple tasks to train AI models
+- **Earning System**: Users earn ETB for completing tasks
+- **MLM Referral Network**: 5-level referral commission system
+- **Membership Tiers**: 9 levels from Intern to D8 Master Elite
+
+## 1.2 Core Value Proposition
+
+- Help build Ethiopia's first major AI
+- Earn daily income
+- Build a team and earn passive commissions
+- Government partnership with Ethiopian AI Institute
+
+## 1.3 Tech Stack Summary
+
+| Layer | Technology | Version |
+|-------|-----------|---------|
+| Frontend | Next.js | 14.x |
+| Backend | Express.js | 4.x |
+| Database | PostgreSQL (Neon) | 15+ |
+| Language | JavaScript (JSX) | ES2022 |
+| Styling | Pure CSS | Custom Design System |
+| i18n | i18next + react-i18next | Latest |
+| Data Fetching | react-query | 3.x |
+| Forms | react-hook-form | 7.x |
+| Icons | lucide-react | Latest |
+| Build Tool | Turborepo | 1.x |
+| Deployment | Vercel | Latest |
+| Package Manager | npm workspaces | 9+ |
+
+---
+
+# 2. HIGH-LEVEL ARCHITECTURE
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                         USER BROWSER                            │
+│                                                                 │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐       │
+│  │ Landing  │  │ Auth     │  │ Dashboard│  │ Admin    │       │
+│  │ Page     │  │ Pages    │  │ Pages    │  │ Pages    │       │
+│  └────┬─────┘  └────┬─────┘  └────┬─────┘  └────┬─────┘       │
+│       │              │              │              │            │
+│       └──────────────┼──────────────┼──────────────┘           │
+│                      │              │                           │
+└──────────────────────┼──────────────┼───────────────────────────┘
+                       │              │
+                       ▼              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    NEXT.JS FRONTEND (Port 3000)                 │
+│                                                                 │
+│  ┌─────────────────────────────────────────────────────────┐    │
+│  │                    Pages Layer                          │    │
+│  │  /          /auth/*    /dashboard   /tasks    /team     │    │
+│  │  /levels    /wallet/*  /admin/*    /profile            │    │
+│  └──────────────────────────┬──────────────────────────────┘    │
+│                             │                                   │
+│  ┌──────────────────────────▼──────────────────────────────┐    │
+│  │                 Components Layer                        │    │
+│  │  layout/  ui/  feedback/  forms/  navigation/          │    │
+│  │  tasks/  team/  wallet/  dashboard/  admin/           │    │
+│  └──────────────────────────┬──────────────────────────────┘    │
+│                             │                                   │
+│  ┌──────────────────────────▼──────────────────────────────┐    │
+│  │                   Hooks Layer                           │    │
+│  │  useAuth  useConfig  useToast  useModal  useBreadcrumbs│    │
+│  │  useTranslation  useDebounce  useMediaQuery            │    │
+│  └──────────────────────────┬──────────────────────────────┘    │
+│                             │                                   │
+│  ┌──────────────────────────▼──────────────────────────────┐    │
+│  │                 Context Layer                           │    │
+│  │  AuthContext  ConfigContext  ToastContext  Language     │    │
+│  └──────────────────────────┬──────────────────────────────┘    │
+│                             │                                   │
+│  ┌──────────────────────────▼──────────────────────────────┐    │
+│  │                 Services Layer                          │    │
+│  │  apiClient  authService  taskService  walletService     │    │
+│  │  teamService  adminService                              │    │
+│  └──────────────────────────┬──────────────────────────────┘    │
+│                             │                                   │
+└─────────────────────────────┼───────────────────────────────────┘
+                              │
+                              │ HTTP (Axios)
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                  EXPRESS API (Port 3001)                        │
+│                                                                 │
+│  ┌─────────────────────────────────────────────────────────┐    │
+│  │                    Routes Layer                         │    │
+│  │  /api/auth  /api/tasks  /api/wallet  /api/team         │    │
+│  │  /api/levels  /api/admin                               │    │
+│  └──────────────────────────┬──────────────────────────────┘    │
+│                             │                                   │
+│  ┌──────────────────────────▼──────────────────────────────┐    │
+│  │                 Middleware Layer                        │    │
+│  │  auth  admin  validate  rateLimit  error               │    │
+│  └──────────────────────────┬──────────────────────────────┘    │
+│                             │                                   │
+│  ┌──────────────────────────▼──────────────────────────────┐    │
+│  │                 Controllers Layer                       │    │
+│  │  authController  taskController  walletController       │    │
+│  │  teamController  adminController  levelController       │    │
+│  └──────────────────────────┬──────────────────────────────┘    │
+│                             │                                   │
+│  ┌──────────────────────────▼──────────────────────────────┐    │
+│  │                 Services Layer                          │    │
+│  │  authService  taskService  walletService                │    │
+│  │  teamService  commissionService  settingsService        │    │
+│  │  notificationService                                    │    │
+│  └──────────────────────────┬──────────────────────────────┘    │
+│                             │                                   │
+│  ┌──────────────────────────▼──────────────────────────────┐    │
+│  │                   Models Layer                          │    │
+│  │  userModel  taskModel  walletModel  commissionModel     │    │
+│  └──────────────────────────┬──────────────────────────────┘    │
+│                             │                                   │
+│  ┌──────────────────────────▼──────────────────────────────┐    │
+│  │                   Utils Layer                           │    │
+│  │  database  jwt  cloudinary  validators  helpers        │    │
+│  └──────────────────────────┬──────────────────────────────┘    │
+│                             │                                   │
+└─────────────────────────────┼───────────────────────────────────┘
+                              │
+                              │ SQL (pg library)
+                              │
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                 POSTGRESQL DATABASE (Neon)                      │
+│                                                                 │
+│  13 Tables:                                                     │
+│  users  wallets  membership_levels  user_memberships           │
+│  tasks  task_submissions  deposit_transactions                │
+│  withdrawal_requests  commission_transactions                 │
+│  referral_tree  daily_earnings  notifications                 │
+│  platform_settings                                             │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+# 3. MONOREPO STRUCTURE
+
+## 3.1 Why Monorepo?
+
+- Single repository for frontend, backend, and shared packages
+- Shared code between apps (config, utils, i18n)
+- Consistent versioning
+- Single `npm install` for all dependencies
+- Turborepo for optimized builds
+
+## 3.2 Workspace Organization
+
+```
+yegna-ai-platform/          # Root
+├── apps/                   # Applications
+│   ├── web/               # Next.js Frontend
+│   └── api/               # Express Backend
+├── packages/              # Shared Packages
+│   ├── config/           # JSON Configuration
+│   ├── ui/               # Shared UI Components
+│   ├── utils/            # Shared Utilities
+│   └── i18n/             # Translations
+├── database/             # Database
+│   ├── migrations/       # SQL Migrations
+│   └── seeds/            # Seed Data
+├── scripts/              # Utility Scripts
+├── docs/                 # Documentation
+└── tests/                # Tests
+```
+
+```
+# 📁 Yegna AI Platform - Complete File Structure with Roles
+
+```
+./                          # Root Directory
+├── .env                   # Environment variables (secrets - NOT committed)
+├── .env.example           # Template for environment variables
+├── .gitignore             # Git ignore rules
+├── .turbo/                # Turborepo cache (auto-generated)
+├── README.md              # Project documentation
+├── package.json           # Root package.json - workspace config + scripts
+├── package-lock.json      # Locked dependency versions
+├── turbo.json             # Turborepo build pipeline config
+├── vercel.json            # Vercel deployment config
+├── merge-files.sh         # Helper script to merge files (dev tool)
+├── report.txt             # File structure report
+
+├── apps/                  # APPLICATIONS
+│   ├── api/               # EXPRESS BACKEND
+│   │   ├── index.js       # API entry point - Express app setup
+│   │   ├── package.json   # API dependencies
+│   │   ├── jsconfig.json  # JS path config
+│   │   │
+│   │   ├── controllers/   # HTTP request handlers
+│   │   │   ├── admin.controller.js      # Admin endpoints (deposits, withdrawals, users, settings)
+│   │   │   ├── auth.controller.js       # Auth endpoints (register, login, profile)
+│   │   │   ├── level.controller.js      # Level endpoints (list, current)
+│   │   │   ├── task.controller.js       # Task endpoints (list, submit, history)
+│   │   │   ├── team.controller.js       # Team endpoints (referrals, commissions)
+│   │   │   └── wallet.controller.js     # Wallet endpoints (balance, deposit, withdraw)
+│   │   │
+│   │   ├── middleware/    # Express middleware
+│   │   │   ├── admin.middleware.js      # Check admin role
+│   │   │   ├── auth.middleware.js       # Verify JWT token
+│   │   │   ├── error.middleware.js      # Centralized error handling
+│   │   │   ├── rateLimit.middleware.js  # Rate limiting
+│   │   │   ├── validate.middleware.js   # Request validation
+│   │   │   └── validation.middleware.js # Input validation helpers
+│   │   │
+│   │   ├── models/       # Database query models
+│   │   │   ├── commission.model.js      # Commission SQL queries
+│   │   │   ├── task.model.js            # Task SQL queries
+│   │   │   ├── user.model.js            # User SQL queries
+│   │   │   └── wallet.model.js          # Wallet SQL queries
+│   │   │
+│   │   ├── routes/       # API route definitions
+│   │   │   ├── admin.routes.js          # /api/admin/* routes
+│   │   │   ├── auth.routes.js           # /api/auth/* routes
+│   │   │   ├── level.routes.js          # /api/levels/* routes
+│   │   │   ├── task.routes.js           # /api/tasks/* routes
+│   │   │   ├── team.routes.js           # /api/team/* routes
+│   │   │   └── wallet.routes.js         # /api/wallet/* routes
+│   │   │
+│   │   ├── services/     # Business logic
+│   │   │   ├── auth.service.js          # Registration, login, profile logic
+│   │   │   ├── commission.service.js    # Commission calculation & distribution
+│   │   │   ├── notification.service.js  # Notification creation
+│   │   │   ├── settings.service.js      # Platform settings management
+│   │   │   ├── task.service.js          # Task creation, submission, approval
+│   │   │   ├── team.service.js          # Referral tree, team statistics
+│   │   │   └── wallet.service.js        # Deposit, withdrawal, balance logic
+│   │   │
+│   │   └── utils/        # Utility functions
+│   │       ├── cloudinary.js            # Cloudinary file upload config
+│   │       ├── database.js              # PostgreSQL connection pool + query helpers
+│   │       ├── jwt.js                   # JWT token generation/verification
+│   │       └── validators.js            # Input validation functions
+│   │
+│   └── web/               # NEXT.JS FRONTEND
+│       ├── package.json   # Frontend dependencies
+│       ├── next.config.js # Next.js configuration
+│       ├── jsconfig.json  # JS path aliases
+│       ├── .env.local     # Local environment (NOT committed)
+│       ├── .env.local.example # Template for local env
+│       │
+│       ├── public/        # Static assets
+│       │   ├── images/
+│       │   │   ├── flags/          # Language flags (ethiopia, usa)
+│       │   │   ├── logo/           # Logo files (logo, logo-white, favicon)
+│       │   │   ├── icons/          # Icon assets
+│       │   │   └── backgrounds/    # Background images
+│       │   ├── fonts/              # Custom fonts
+│       │   └── locales/            # Static locale files
+│       │
+│       └── src/           # Source code
+│           ├── pages/     # Next.js pages
+│           │   ├── _app.jsx               # Main app wrapper (providers)
+│           │   ├── _document.jsx          # HTML document
+│           │   ├── index.jsx              # Landing page
+│           │   ├── 404.jsx                # Not found page
+│           │   │
+│           │   ├── auth/                  # Authentication pages
+│           │   │   ├── login.jsx          # Login page
+│           │   │   ├── register.jsx       # Registration page
+│           │   │   └── forgot-password.jsx # Password reset request
+│           │   │
+│           │   ├── dashboard/             # Dashboard
+│           │   │   └── index.jsx          # Main dashboard (stats, tasks, activity)
+│           │   │
+│           │   ├── tasks/                 # Task pages
+│           │   │   ├── index.jsx          # Task list + execution
+│           │   │   └── [taskId].jsx       # Single task detail
+│           │   │
+│           │   ├── team/                  # Team pages
+│           │   │   ├── index.jsx          # Team overview + referrals
+│           │   │   ├── tree.jsx           # Team tree visualization
+│           │   │   └── commissions.jsx    # Commission report
+│           │   │
+│           │   ├── levels/                # Membership levels
+│           │   │   ├── index.jsx          # All tiers display
+│           │   │   └── upgrade.jsx        # Level upgrade flow
+│           │   │
+│           │   ├── wallet/                # Wallet pages
+│           │   │   ├── index.jsx          # Wallet overview + transactions
+│           │   │   ├── deposit.jsx        # Deposit funds
+│           │   │   └── withdraw.jsx       # Withdraw funds
+│           │   │
+│           │   ├── admin/                 # Admin pages
+│           │   │   ├── index.jsx          # Admin dashboard (stats, queues)
+│           │   │   ├── deposits.jsx       # Deposit approvals
+│           │   │   ├── withdrawals.jsx    # Withdrawal processing
+│           │   │   ├── users.jsx          # User management
+│           │   │   └── settings.jsx       # Platform settings
+│           │   │
+│           │   └── profile/               # Profile
+│           │       └── index.jsx          # User profile + edit
+│           │
+│           ├── components/ # Reusable components
+│           │   ├── layout/               # Layout components
+│           │   │   ├── RootLayout.jsx    # Main layout wrapper
+│           │   │   ├── DashboardLayout.jsx # Dashboard layout (sidebar + header)
+│           │   │   ├── AuthLayout.jsx    # Auth pages layout
+│           │   │   ├── AdminLayout.jsx   # Admin pages layout
+│           │   │   ├── Header.jsx        # Top navigation bar
+│           │   │   ├── Footer.jsx        # Bottom footer
+│           │   │   └── Sidebar.jsx       # Side navigation
+│           │   │
+│           │   ├── ui/                   # UI components
+│           │   │   ├── Button.jsx        # Button (6 variants)
+│           │   │   ├── Card.jsx          # Card container
+│           │   │   ├── Input.jsx         # Form input
+│           │   │   ├── Modal.jsx         # Modal dialog
+│           │   │   ├── Alert.jsx         # Alert notification
+│           │   │   ├── Badge.jsx         # Status badge
+│           │   │   ├── Spinner.jsx       # Loading spinner
+│           │   │   ├── Skeleton.jsx      # Loading placeholder
+│           │   │   ├── ProgressBar.jsx   # Progress indicator
+│           │   │   └── Tooltip.jsx       # Tooltip
+│           │   │
+│           │   ├── feedback/             # Feedback components
+│           │   │   ├── Toast.jsx         # Individual toast
+│           │   │   ├── ToastContainer.jsx # Toast manager
+│           │   │   ├── ConfirmDialog.jsx # Confirmation modal
+│           │   │   ├── EmptyState.jsx    # Empty placeholder
+│           │   │   └── Notification.jsx  # Notification item
+│           │   │
+│           │   ├── navigation/           # Navigation components
+│           │   │   ├── Breadcrumbs.jsx   # Breadcrumb navigation
+│           │   │   ├── Pagination.jsx    # Pagination
+│           │   │   └── TabNavigation.jsx # Tab navigation
+│           │   │
+│           │   ├── forms/                # Form components
+│           │   │   ├── FormField.jsx     # Form field wrapper
+│           │   │   ├── FileUpload.jsx    # File upload
+│           │   │   └── SearchInput.jsx   # Search input
+│           │   │
+│           │   ├── tasks/                # Task components
+│           │   │   ├── TaskCard.jsx      # Task card
+│           │   │   └── TaskList.jsx      # Task list
+│           │   │
+│           │   ├── team/                 # Team components
+│           │   │   ├── ReferralLink.jsx  # Referral link display
+│           │   │   └── TeamTree.jsx      # Team tree
+│           │   │
+│           │   └── wallet/               # Wallet components
+│           │       ├── BalanceCard.jsx   # Balance display
+│           │       └── TransactionList.jsx # Transaction list
+│           │
+│           ├── hooks/     # Custom hooks
+│           │   ├── useAuth.js            # Authentication hook
+│           │   ├── useConfig.js          # Configuration hook
+│           │   ├── useToast.js           # Toast hook
+│           │   ├── useModal.js           # Modal hook
+│           │   ├── useBreadcrumbs.js     # Breadcrumbs hook
+│           │   ├── useTranslation.js     # Translation hook
+│           │   ├── useDebounce.js        # Debounce hook
+│           │   ├── useLocalStorage.js    # Local storage hook
+│           │   └── useMediaQuery.js      # Responsive hook
+│           │
+│           ├── context/   # React contexts
+│           │   ├── AuthContext.jsx       # Auth state provider
+│           │   ├── ConfigContext.jsx     # Config provider
+│           │   ├── ToastContext.jsx      # Toast provider
+│           │   └── LanguageContext.jsx   # Language provider
+│           │
+│           ├── services/  # API service functions
+│           │   ├── apiClient.js          # Axios instance + interceptors
+│           │   ├── authService.js        # Auth API calls
+│           │   ├── taskService.js        # Task API calls
+│           │   ├── walletService.js      # Wallet API calls
+│           │   ├── teamService.js        # Team API calls
+│           │   └── adminService.js       # Admin API calls
+│           │
+│           ├── styles/    # CSS files
+│           │   ├── globals.css            # Global styles + utilities
+│           │   ├── variables.css          # CSS variables (design tokens)
+│           │   └── components/
+│           │       ├── layout.css         # Layout styles
+│           │       ├── card.css           # Card styles
+│           │       ├── button.css         # Button styles
+│           │       ├── form.css           # Form styles
+│           │       ├── table.css          # Table styles
+│           │       ├── animations.css     # Animation keyframes
+│           │       └── responsive.css     # Responsive breakpoints
+│           │
+│           └── middleware.js # Next.js middleware (route protection)
+
+├── packages/              # SHARED PACKAGES
+│   ├── config/           # Configuration package
+│   │   ├── index.js      # Config entry point
+│   │   ├── package.json  # Config dependencies
+│   │   └── src/
+│   │       ├── index.js              # Config aggregator
+│   │       ├── configLoader.js       # Config file loader
+│   │       ├── levels.config.json    # Membership tiers
+│   │       ├── commission.config.json # Commission rates
+│   │       ├── tasks.config.json     # Task types/templates
+│   │       ├── payment.config.json   # Payment methods
+│   │       ├── withdrawal.config.json # Withdrawal settings
+│   │       ├── navigation.config.json # Navigation structure
+│   │       ├── breadcrumbs.config.json # Breadcrumb mappings
+│   │       └── icons.config.json     # Icon mappings
+│   │
+│   ├── i18n/             # Internationalization package
+│   │   ├── package.json  # i18n dependencies
+│   │   └── src/
+│   │       ├── index.js  # i18n setup
+│   │       └── locales/
+│   │           ├── en/   # English translations
+│   │           │   ├── common.json
+│   │           │   ├── auth.json
+│   │           │   ├── dashboard.json
+│   │           │   ├── tasks.json
+│   │           │   ├── team.json
+│   │           │   ├── wallet.json
+│   │           │   ├── levels.json
+│   │           │   ├── navigation.json
+│   │           │   ├── payment.json
+│   │           │   ├── commission.json
+│   │           │   ├── admin.json
+│   │           │   └── profile.json
+│   │           └── am/   # Amharic translations
+│   │               ├── (same files as en)
+│   │
+│   ├── ui/               # Shared UI components
+│   │   ├── package.json
+│   │   └── src/
+│   │       ├── Alert.jsx
+│   │       ├── Modal.jsx
+│   │       └── Toast.jsx
+│   │
+│   └── utils/            # Shared utilities
+│       ├── package.json
+│       └── src/
+│           ├── index.js          # Utils entry point
+│           ├── calculators.js    # Financial calculations
+│           ├── constants.js      # Shared constants
+│           ├── formatters.js     # Formatting functions
+│           ├── helpers.js        # Helper functions
+│           └── validators.js     # Validation functions
+
+├── database/             # DATABASE
+│   ├── migrations/       # SQL migrations (run in order)
+│   │   ├── 001_create_users.sql
+│   │   ├── 002_create_wallets.sql
+│   │   ├── 003_create_levels.sql
+│   │   ├── 004_create_tasks.sql
+│   │   ├── 005_create_commissions.sql
+│   │   ├── 006_create_transactions.sql
+│   │   ├── 007_create_daily_earnings.sql
+│   │   ├── 008_create_notifications.sql
+│   │   └── 009_create_settings.sql
+│   │
+│   └── seeds/            # Seed data
+│       ├── admin.sql             # Admin user
+│       ├── levels.sql            # Membership levels
+│       └── platform_settings.sql # Platform settings
+
+├── scripts/              # UTILITY SCRIPTS
+│   ├── migrate.js        # Run database migrations
+│   ├── seed.js           # Run database seeds
+│   ├── setup.js          # Initial setup
+│   └── build.sh          # Build script
+
+├── docs/                 # DOCUMENTATION
+│   ├── architecture.md   # Architecture overview
+│   ├── api.md            # API endpoints
+│   ├── config.md         # Configuration guide
+│   └── deployment.md     # Deployment guide
+
+└── tests/                # TESTS
+    ├── unit/             # Unit tests
+    └── integration/      # Integration tests
+```
+
+---
+
+This is the complete annotated file structure of the Yegna AI platform. Every file's role is documented. This will serve as a perfect reference when continuing development in a new chat!
+```
+
+## 3.3 npm Workspaces
+
+The root `package.json` defines:
+
+```json
+{
+  "workspaces": ["apps/*", "packages/*"]
+}
+```
+
+This allows:
+- `@yegna/web` → `apps/web`
+- `@yegna/api` → `apps/api`
+- `@yegna/config` → `packages/config`
+- `@yegna/ui` → `packages/ui`
+- `@yegna/utils` → `packages/utils`
+- `@yegna/i18n` → `packages/i18n`
+
+---
+
+# 4. FRONTEND ARCHITECTURE (Next.js)
+
+## 4.1 Page Structure
+
+### Public Pages (No Auth Required)
+```
+/                          → Landing Page
+/auth/login                → Login
+/auth/register             → Registration
+/auth/forgot-password      → Password Reset Request
+/404                       → Not Found
+```
+
+### User Pages (Auth Required)
+```
+/dashboard                 → Main Dashboard
+/tasks                     → Task List & Execution
+/tasks/[taskId]            → Single Task Detail
+/team                      → Team Overview
+/team/tree                 → Team Tree Visualization
+/team/commissions          → Commission Report
+/levels                    → Membership Tiers
+/levels/upgrade            → Level Upgrade
+/wallet                    → Wallet Overview
+/wallet/deposit            → Deposit Funds
+/wallet/withdraw           → Withdraw Funds
+/profile                   → User Profile
+```
+
+### Admin Pages (Admin Role Required)
+```
+/admin                     → Admin Dashboard
+/admin/users               → User Management
+/admin/deposits            → Deposit Approvals
+/admin/withdrawals         → Withdrawal Processing
+/admin/settings            → Platform Settings
+```
+
+## 4.2 Component Architecture
+
+### Layout Components
+```
+RootLayout.jsx             → Main layout wrapper (decides auth vs dashboard)
+DashboardLayout.jsx        → Layout with sidebar + header + footer
+AuthLayout.jsx             → Layout for auth pages
+AdminLayout.jsx            → Layout for admin pages
+Header.jsx                 → Top navigation bar
+Footer.jsx                 → Bottom footer
+Sidebar.jsx                → Side navigation
+```
+
+### UI Components
+```
+Button.jsx                 → Button (6 variants, 3 sizes)
+Card.jsx                   → Card container
+Input.jsx                  → Form input
+Modal.jsx                  → Modal dialog
+Alert.jsx                  → Alert/notification
+Badge.jsx                  → Status badge (8 colors)
+Spinner.jsx                → Loading spinner
+Skeleton.jsx               → Loading placeholder
+ProgressBar.jsx            → Progress indicator
+Tooltip.jsx                → Tooltip
+```
+
+### Feedback Components
+```
+Toast.jsx                  → Individual toast
+ToastContainer.jsx         → Toast manager
+ConfirmDialog.jsx          → Confirmation modal
+EmptyState.jsx             → Empty placeholder
+Notification.jsx           → Notification item
+```
+
+### Navigation Components
+```
+Breadcrumbs.jsx            → Breadcrumb navigation
+Pagination.jsx             → Pagination
+TabNavigation.jsx          → Tab navigation
+```
+
+### Form Components
+```
+FormField.jsx              → Form field wrapper
+FileUpload.jsx             → File upload
+SearchInput.jsx            → Search with debounce
+```
+
+## 4.3 Hooks Layer
+
+```
+useAuth.js                 → Authentication state
+useConfig.js               → Platform configuration
+useToast.js                → Toast notifications
+useModal.js                → Modal management
+useBreadcrumbs.js          → Breadcrumb generation
+useTranslation.js          → Language translation
+useLocalStorage.js         → Local storage persistence
+useMediaQuery.js           → Responsive detection
+useDebounce.js             → Debounce values
+```
+
+## 4.4 Context Layer
+
+```
+AuthContext.jsx            → User authentication state
+ConfigContext.jsx          → Platform configuration
+ToastContext.jsx           → Toast notification state
+LanguageContext.jsx        → Language preference
+```
+
+## 4.5 Services Layer
+
+```
+apiClient.js               → Axios instance with interceptors
+authService.js             → Auth API calls
+taskService.js             → Task API calls
+walletService.js           → Wallet API calls
+teamService.js             → Team API calls
+adminService.js            → Admin API calls
+```
+
+## 4.6 State Management
+
+- **Server State**: react-query for all API data
+  - `useQuery` for fetching
+  - `useMutation` for mutations
+  - Automatic caching and invalidation
+
+- **Client State**: React Context
+  - Auth state
+  - Toast notifications
+  - Language preference
+  - Modal state
+
+---
+
+# 5. BACKEND ARCHITECTURE (Express.js)
+
+## 5.1 Route Structure
+
+```
+/api/auth/register          → POST - Register user
+/api/auth/login             → POST - Login user
+/api/auth/me                → GET - Current user
+/api/auth/profile           → PUT - Update profile
+/api/auth/validate-referral → GET - Validate referral code
+
+/api/tasks                  → GET - Available tasks
+/api/tasks/:taskId          → GET - Task detail
+/api/tasks/submit           → POST - Submit task
+/api/tasks/history          → GET - Task history
+/api/tasks/progress         → GET - Today's progress
+
+/api/wallet/balance         → GET - Wallet balance
+/api/wallet/transactions    → GET - Transaction history
+/api/wallet/deposit         → POST - Create deposit
+/api/wallet/withdraw        → POST - Create withdrawal
+/api/wallet/payment-methods → GET - Payment methods
+
+/api/team/statistics        → GET - Team stats
+/api/team/referrals         → GET - Direct referrals
+/api/team/tree              → GET - Referral tree
+/api/team/commissions       → GET - Commission history
+/api/team/commission-summary → GET - Commission summary
+
+/api/levels                 → GET - All levels
+/api/levels/current         → GET - Current level
+
+/api/admin/stats            → GET - Platform stats
+/api/admin/deposits/pending → GET - Pending deposits
+/api/admin/deposits/:id/approve → POST - Approve deposit
+/api/admin/deposits/:id/reject  → POST - Reject deposit
+/api/admin/withdrawals/pending → GET - Pending withdrawals
+/api/admin/withdrawals/:id/process → POST - Process withdrawal
+/api/admin/withdrawals/:id/reject  → POST - Reject withdrawal
+/api/admin/users            → GET - All users
+/api/admin/settings         → GET/PUT - Platform settings
+```
+
+## 5.2 Middleware Chain
+
+```
+Request → CORS → Helmet → JSON Parser → Rate Limiter → Routes → 404 → Error Handler
+```
+
+### Middleware Types:
+1. **CORS** - Cross-origin resource sharing
+2. **Helmet** - Security headers
+3. **JSON Parser** - Parse request bodies
+4. **Rate Limiter** - Prevent abuse (100 requests/15min)
+5. **Auth Middleware** - Verify JWT token
+6. **Admin Middleware** - Check admin role
+7. **Validation Middleware** - Validate request data
+8. **Error Handler** - Centralized error handling
+
+## 5.3 Controller → Service → Model Pattern
+
+```
+Controller: Handles HTTP requests/responses
+    ↓
+Service: Contains business logic
+    ↓
+Model: Direct database queries (parameterized SQL)
+```
+
+---
+
+# 6. DATABASE ARCHITECTURE (PostgreSQL)
+
+## 6.1 Tables Overview
+
+### `users` Table
+```
+id (UUID, PK)
+username (VARCHAR, UNIQUE)
+email (VARCHAR, UNIQUE)
+password_hash (VARCHAR)
+full_name (VARCHAR)
+phone (VARCHAR, nullable)
+profile_image_url (TEXT, nullable)
+role (VARCHAR: 'user' | 'admin')
+referrer_id (UUID, FK → users.id, nullable)
+referral_code (VARCHAR, UNIQUE)
+is_active (BOOLEAN)
+is_verified (BOOLEAN)
+created_at (TIMESTAMP)
+updated_at (TIMESTAMP)
+```
+
+### `wallets` Table
+```
+id (UUID, PK)
+user_id (UUID, FK → users.id, UNIQUE)
+balance (DECIMAL)
+total_earned (DECIMAL)
+total_withdrawn (DECIMAL)
+created_at (TIMESTAMP)
+updated_at (TIMESTAMP)
+```
+
+### `membership_levels` Table
+```
+id (SERIAL, PK)
+level_number (INT, UNIQUE)
+name (VARCHAR)
+deposit_amount (DECIMAL)
+tasks_per_day (INT)
+income_per_task (DECIMAL)
+daily_income (DECIMAL)
+monthly_income (DECIMAL)
+is_active (BOOLEAN)
+```
+
+### `user_memberships` Table
+```
+id (UUID, PK)
+user_id (UUID, FK → users.id)
+level_id (INT, FK → membership_levels.id)
+is_active (BOOLEAN)
+activated_at (TIMESTAMP)
+expires_at (TIMESTAMP, nullable)
+```
+
+### `tasks` Table
+```
+id (UUID, PK)
+title (VARCHAR)
+description (TEXT)
+task_type (VARCHAR: 'text' | 'image' | 'file' | 'voice')
+reward_amount (DECIMAL)
+required_level (INT)
+status (VARCHAR: 'active' | 'completed' | 'expired')
+max_completions (INT)
+completion_count (INT)
+created_at (TIMESTAMP)
+expires_at (TIMESTAMP, nullable)
+```
+
+### `task_submissions` Table
+```
+id (UUID, PK)
+task_id (UUID, FK → tasks.id)
+user_id (UUID, FK → users.id)
+submission_data (JSONB)
+attachments (JSONB)
+status (VARCHAR: 'submitted' | 'approved' | 'rejected')
+reward_amount (DECIMAL)
+submitted_at (TIMESTAMP)
+reviewed_at (TIMESTAMP, nullable)
+UNIQUE(task_id, user_id)
+```
+
+### `deposit_transactions` Table
+```
+id (UUID, PK)
+user_id (UUID, FK → users.id)
+level_id (INT, FK → membership_levels.id)
+amount (DECIMAL)
+payment_method (VARCHAR)
+payment_proof_url (TEXT, nullable)
+status (VARCHAR: 'pending' | 'approved' | 'rejected')
+reviewed_by (UUID, FK → users.id, nullable)
+review_notes (TEXT, nullable)
+created_at (TIMESTAMP)
+reviewed_at (TIMESTAMP, nullable)
+```
+
+### `withdrawal_requests` Table
+```
+id (UUID, PK)
+user_id (UUID, FK → users.id)
+amount (DECIMAL)
+fee (DECIMAL)
+net_amount (DECIMAL)
+payment_method (VARCHAR)
+account_details (JSONB)
+status (VARCHAR: 'pending' | 'processing' | 'completed' | 'rejected')
+processed_by (UUID, FK → users.id, nullable)
+transaction_reference (VARCHAR, nullable)
+created_at (TIMESTAMP)
+processed_at (TIMESTAMP, nullable)
+```
+
+### `commission_transactions` Table
+```
+id (UUID, PK)
+user_id (UUID, FK → users.id)
+from_user_id (UUID, FK → users.id)
+commission_type (VARCHAR: 'direct_referral' | 'team_task' | 'level_bonus')
+amount (DECIMAL)
+level (INT, nullable)
+metadata (JSONB)
+created_at (TIMESTAMP)
+```
+
+### `referral_tree` Table
+```
+id (UUID, PK)
+user_id (UUID, FK → users.id)
+referrer_id (UUID, FK → users.id)
+level (INT: 1-5)
+created_at (TIMESTAMP)
+UNIQUE(user_id, referrer_id, level)
+```
+
+### `daily_earnings` Table
+```
+id (UUID, PK)
+user_id (UUID, FK → users.id)
+task_date (DATE)
+tasks_completed (INT)
+daily_income (DECIMAL)
+team_commission (DECIMAL)
+total_earned (DECIMAL)
+UNIQUE(user_id, task_date)
+```
+
+### `notifications` Table
+```
+id (UUID, PK)
+user_id (UUID, FK → users.id)
+title (VARCHAR)
+message (TEXT)
+type (VARCHAR)
+is_read (BOOLEAN)
+metadata (JSONB)
+created_at (TIMESTAMP)
+```
+
+### `platform_settings` Table
+```
+id (UUID, PK)
+setting_key (VARCHAR, UNIQUE)
+setting_value (JSONB)
+setting_type (VARCHAR: 'payment' | 'withdrawal' | 'general' | 'commission' | 'task')
+description (TEXT, nullable)
+is_active (BOOLEAN)
+created_by (UUID, FK → users.id, nullable)
+updated_by (UUID, FK → users.id, nullable)
+created_at (TIMESTAMP)
+updated_at (TIMESTAMP)
+```
+
+---
+
+# 7. CONFIGURATION SYSTEM
+
+## 7.1 Config-Driven Architecture
+
+All business logic values are stored in JSON config files or database settings. **Zero hardcoded values.**
+
+### Config Files (packages/config/src/)
+```
+levels.config.json          → Membership tiers definition
+commission.config.json      → Commission rates
+tasks.config.json           → Task types and templates
+payment.config.json         → Default payment methods
+withdrawal.config.json      → Default withdrawal limits
+navigation.config.json      → Navigation structure
+breadcrumbs.config.json     → Breadcrumb mappings
+icons.config.json           → Icon mappings
+```
+
+### Database Settings (admin-editable)
+```
+payment_methods             → Active payment methods
+withdrawal_config           → Withdrawal limits and fees
+direct_referral_commission  → Direct referral percentage
+team_level_commissions      → Multi-level commission percentages
+```
+
+## 7.2 Configuration Loading
+
+```
+Config Package → configLoader.js → loadConfig() → Returns parsed JSON
+                                      ↓
+                              Cached in memory
+                                      ↓
+                              Frontend via ConfigContext
+                              Backend via require
+```
+
+---
+
+# 8. INTERNATIONALIZATION (i18n)
+
+## 8.1 Supported Languages
+
+- **English** (default)
+- **Amharic** (አማርኛ)
+
+## 8.2 Translation Namespaces
+
+```
+common.json        → Shared/global text
+auth.json          → Authentication pages
+dashboard.json     → Dashboard page
+tasks.json         → Task pages
+team.json          → Team pages
+wallet.json        → Wallet pages
+levels.json        → Membership levels
+navigation.json    → Navigation/breadcrumbs
+payment.json       → Payment methods
+commission.json    → Commission descriptions
+admin.json         → Admin pages
+profile.json       → Profile page
+```
+
+## 8.3 i18n Setup
+
+- Uses `i18next` + `react-i18next`
+- Language preference stored in `localStorage`
+- Detection order: localStorage → navigator → htmlTag
+- Default namespace: `common`
+- Fallback language: `en`
+
+---
+
+# 9. AUTHENTICATION & SECURITY
+
+## 9.1 Authentication Flow
+
+```
+1. User registers/logins
+2. Backend validates credentials
+3. Backend generates JWT tokens (access + refresh)
+4. Tokens stored in cookies (js-cookie)
+5. Access token sent in Authorization header
+6. Backend middleware verifies token
+7. User data attached to request object
+```
+
+## 9.2 JWT Tokens
+
+- **Access Token**: 7 days expiry
+- **Refresh Token**: 30 days expiry
+- **Secret**: `JWT_SECRET` environment variable
+
+## 9.3 Security Measures
+
+### Implemented:
+- ✅ Parameterized SQL queries (prepared statements)
+- ✅ Input validation (regex, type checking)
+- ✅ XSS protection (helmet)
+- ✅ Password hashing (bcrypt, 10 rounds)
+- ✅ Rate limiting (express-rate-limit)
+- ✅ CORS with credentials
+- ✅ JWT authentication
+- ✅ Admin role checking
+- ✅ Sanitization of user input
+
+### Database Security:
+- UUID primary keys (not sequential)
+- Foreign key constraints
+- Unique constraints on email, username, referral_code
+- ON DELETE CASCADE for related records
+
+---
+
+# 10. BUSINESS LOGIC SYSTEMS
+
+## 10.1 Membership Levels
+
+| Level | Deposit (ETB) | Tasks/Day | Income/Task | Daily Income | Monthly Income |
+|-------|---------------|-----------|-------------|--------------|----------------|
+| Intern | 0 | 5 | 12 | 60 | 1,800 |
+| D1 | 1,600 | 5 | 12 | 60 | 1,800 |
+| D2 | 4,000 | 5 | 30 | 150 | 4,500 |
+| D3 | 7,200 | 5 | 54 | 270 | 8,100 |
+| D4 | 16,000 | 5 | 120 | 600 | 18,000 |
+| D5 | 36,000 | 5 | 300 | 1,500 | 45,000 |
+| D6 | 90,000 | 10 | 385 | 3,850 | 115,500 |
+| D7 | 140,000 | 20 | 275 | 5,500 | 165,000 |
+| D8 | 330,000 | 20 | 625 | 12,500 | 375,000 |
+
+## 10.2 Level Upgrade Flow
+
+```
+1. User views levels page
+2. Selects desired tier
+3. Redirects to wallet/deposit with level param
+4. User submits deposit with payment proof
+5. Admin approves deposit
+6. Wallet credited + membership updated
+```
+
+---
+
+# 11. MLM REFERRAL SYSTEM
+
+## 11.1 Referral Tree Structure
+
+```
+                    ┌─────────┐
+                    │  You    │
+                    │  (Root) │
+                    └────┬────┘
+                         │
+          ┌──────────────┼──────────────┐
+          │              │              │
+       ┌──▼──┐        ┌──▼──┐        ┌──▼──┐
+       │ L1  │        │ L1  │        │ L1  │
+       │ 10% │        │ 10% │        │ 10% │
+       └──┬───┘        └──┬───┘        └─────┘
+          │              │
+       ┌──▼──┐        ┌──▼──┐
+       │ L2  │        │ L2  │
+       │ 5%  │        │ 5%  │
+       └──┬───┘        └─────┘
+          │
+       ┌──▼──┐
+       │ L3  │
+       │ 3%  │
+       └──┬───┘
+          │
+       ┌──▼──┐
+       │ L4  │
+       │ 2%  │
+       └──┬───┘
+          │
+       ┌──▼──┐
+       │ L5  │
+       │ 1%  │
+       └─────┘
+```
+
+## 11.2 Commission Types
+
+### Direct Referral Commission
+- When a referred user deposits
+- 10% of deposit amount
+- Requires referrer to be D1 or higher
+
+### Team Task Commission
+- When downline members complete tasks
+- Level 1: 10% of task reward
+- Level 2: 5% of task reward
+- Level 3: 3% of task reward
+- Level 4: 2% of task reward
+- Level 5: 1% of task reward
+
+---
+
+# 12. TASK SYSTEM
+
+## 12.1 Task Types
+
+```
+text    → Amharic Text & NLP tasks
+image   → Cultural Image Tagging
+file    → Data Document Verification
+voice   → Amharic Speech Audio
+```
+
+## 12.2 Task Flow
+
+```
+1. Admin generates tasks (or auto-generated)
+2. User views available tasks (filtered by level)
+3. User selects task and provides answer
+4. System auto-validates basic requirements
+5. Task approved → wallet credited
+6. Team commissions distributed
+```
+
+## 12.3 Daily Limits
+
+- Each level has `tasksPerDay` limit
+- Tracked in `daily_earnings` table
+- Resets daily at midnight
+
+---
+
+# 13. WALLET & PAYMENT SYSTEM
+
+## 13.1 Deposit Flow
+
+```
+1. User selects level to upgrade
+2. User chooses payment method (Telebirr/CBE/Abyssinia)
+3. User transfers money manually
+4. User uploads payment proof
+5. Admin reviews and approves/rejects
+6. On approval: wallet credited + level upgraded
+```
+
+## 13.2 Withdrawal Flow
+
+```
+1. User requests withdrawal
+2. System deducts amount + 2% fee
+3. Admin processes withdrawal
+4. Marked as completed with reference
+```
+
+## 13.3 Payment Methods
+
+- Telebirr
+- CBE Birr
+- Bank of Abyssinia
+
+---
+
+# 14. ADMIN SYSTEM
+
+## 14.1 Admin Capabilities
+
+- View platform statistics
+- Approve/reject deposits
+- Process/reject withdrawals
+- View all users
+- Manage platform settings
+- Generate tasks
+- Configure commission rates
+- Manage payment methods
+
+## 14.2 Admin Access
+
+- Role: `admin` in users table
+- JWT contains role
+- `requireAdmin` middleware checks role
+- Admin can toggle via Shield button (for testing)
+
+---
+
+# 15. UI/UX DESIGN SYSTEM
+
+## 15.1 Color Palette
+
+```
+Primary: Emerald (#047857)
+  - 50: #ECFDF5
+  - 100: #D1FAE5
+  - 600: #059669
+  - 700: #047857
+  - 800: #065F46
+
+Accent: Yellow (#FACC15)
+  - 300: #FDE047
+  - 400: #FACC15
+
+Ethiopian Flag: Green #078930, Yellow #FCDD09, Red #DA121A
+```
+
+## 15.2 Typography
+
+```
+Font: Inter
+Sizes: 10px, 11px, 12px, 14px, 16px, 18px, 20px, 24px, 30px, 36px
+Weights: 400, 500, 600, 700, 800, 900
+```
+
+## 15.3 Components Style
+
+- Cards: White, rounded-2xl/3xl, border slate-200
+- Buttons: Emerald primary, Yellow accent, Outline, Ghost
+- Badges: 8 color variants
+- Inputs: White, border slate-200, focus emerald
+
+---
+
+# 16. API ENDPOINTS REFERENCE
+
+## 16.1 Auth Endpoints
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| POST | /api/auth/register | No | Register new user |
+| POST | /api/auth/login | No | Login user |
+| GET | /api/auth/me | Yes | Get current user |
+| PUT | /api/auth/profile | Yes | Update profile |
+| GET | /api/auth/validate-referral | No | Validate referral code |
+
+## 16.2 Task Endpoints
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| GET | /api/tasks | Yes | Available tasks |
+| GET | /api/tasks/:id | Yes | Task detail |
+| POST | /api/tasks/submit | Yes | Submit task |
+| GET | /api/tasks/history | Yes | Task history |
+| GET | /api/tasks/progress | Yes | Today's progress |
+
+## 16.3 Wallet Endpoints
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| GET | /api/wallet/balance | Yes | Wallet balance |
+| GET | /api/wallet/transactions | Yes | Transaction history |
+| POST | /api/wallet/deposit | Yes | Create deposit |
+| POST | /api/wallet/withdraw | Yes | Create withdrawal |
+| GET | /api/wallet/payment-methods | Yes | Payment methods |
+
+## 16.4 Team Endpoints
+
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| GET | /api/team/statistics | Yes | Team stats |
+| GET | /api/team/referrals | Yes | Direct referrals |
+| GET | /api/team/tree | Yes | Referral tree |
+| GET | /api/team/commissions | Yes | Commission history |
+| GET | /api/team/commission-summary | Yes | Commission summary |
+
+## 16.5 Admin Endpoints
+
+| Method | Endpoint | Auth | Admin | Description |
+|--------|----------|------|-------|-------------|
+| GET | /api/admin/stats | Yes | Yes | Platform stats |
+| GET | /api/admin/deposits/pending | Yes | Yes | Pending deposits |
+| POST | /api/admin/deposits/:id/approve | Yes | Yes | Approve deposit |
+| POST | /api/admin/deposits/:id/reject | Yes | Yes | Reject deposit |
+| GET | /api/admin/withdrawals/pending | Yes | Yes | Pending withdrawals |
+| POST | /api/admin/withdrawals/:id/process | Yes | Yes | Process withdrawal |
+| POST | /api/admin/withdrawals/:id/reject | Yes | Yes | Reject withdrawal |
+| GET | /api/admin/users | Yes | Yes | All users |
+| GET | /api/admin/settings | Yes | Yes | Get settings |
+| PUT | /api/admin/settings | Yes | Yes | Update settings |
+
+---
+
+# 17. STATE MANAGEMENT
+
+## 17.1 Server State (react-query)
+
+```javascript
+// Queries
+useQuery('walletBalance', getBalance)
+useQuery('availableTasks', getTasks)
+useQuery('teamStatistics', getTeamStatistics)
+useQuery('todayProgress', getTodayProgress)
+
+// Mutations
+useMutation(submitTask)
+useMutation(createDeposit)
+useMutation(createWithdrawal)
+```
+
+## 17.2 Client State (React Context)
+
+```javascript
+// AuthContext
+{ user, authenticated, loading, login, logout, updateUser }
+
+// ConfigContext
+{ levels, commission, tasks, payment, navigation, icons, appName }
+
+// ToastContext
+{ showToast, showSuccessToast, showErrorToast, showWarningToast, showInfoToast }
+
+// LanguageContext
+{ language, changeLanguage, isAmharic, isEnglish }
+```
+
+---
+
+# 18. DEPLOYMENT ARCHITECTURE
+
+## 18.1 Vercel Deployment
+
+```
+Vercel Project → yegna-ai
+├── Frontend: apps/web (Next.js)
+├── API: apps/api (Express as serverless)
+└── Build: Turborepo + npm workspaces
+```
+
+## 18.2 Environment Variables Required
+
+```
+DATABASE_URL=postgresql://...
+JWT_SECRET=...
+CLOUDINARY_CLOUD_NAME=...
+CLOUDINARY_API_KEY=...
+CLOUDINARY_API_SECRET=...
+NEXT_PUBLIC_APP_URL=...
+NEXT_PUBLIC_API_URL=...
+```
+
+---
+
+# 19. ENVIRONMENT VARIABLES
+
+## 19.1 Root .env
+
+```
+# Database
+DATABASE_URL
+DATABASE_POOL_MAXDATABASE_IDLE_TIMEOUT
+DATABASE_CONNECTION_TIMEOUT
+
+# JWT
+JWT_SECRET
+JWT_EXPIRES_IN
+JWT_REFRESH_EXPIRES_IN
+
+# Cloudinary
+CLOUDINARY_CLOUD_NAME
+CLOUDINARY_API_KEY
+CLOUDINARY_API_SECRET
+CLOUDINARY_UPLOAD_FOLDER
+
+# Rate Limiting
+RATE_LIMIT_WINDOW_MS
+RATE_LIMIT_MAX_REQUESTS
+```
+
+## 19.2 Web .env.local
+
+```
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+NEXT_PUBLIC_API_URL=http://localhost:3001/api
+```
+
+---
+
+# 20. KNOWN ISSUES & NEXT STEPS
+
+## 20.1 Completed Features
+
+- ✅ User registration with referral code
+- ✅ Login/logout
+- ✅ Dashboard with stats
+- ✅ Task system (list, detail, submit)
+- ✅ Membership levels display
+- ✅ Wallet (balance, deposit, withdraw)
+- ✅ Team (referrals, commissions)
+- ✅ Admin (deposits, withdrawals, users, settings)
+- ✅ i18n (English + Amharic)
+- ✅ Ethiopian flag bar
+- ✅ Responsive design
+- ✅ Toast notifications
+- ✅ Breadcrumbs
+- ✅ Pagination
+
+## 20.2 Pending Improvements
+
+- [ ] Real file upload to Cloudinary
+- [ ] Email notifications
+- [ ] Password reset email
+- [ ] Real-time notifications (WebSocket)
+- [ ] Admin task generation UI
+- [ ] Advanced analytics dashboard
+- [ ] Export reports (CSV/PDF)
+- [ ] Two-factor authentication
+- [ ] Social login
+- [ ] Mobile app (React Native)
+- [ ] Unit tests
+- [ ] E2E tests
+- [ ] CI/CD pipeline
+- [ ] Error tracking (Sentry)
+- [ ] Analytics (Google Analytics)
+- [ ] Performance monitoring
+
+## 20.3 Next Development Priorities
+
+1. **Fix remaining UI bugs** - Ensure all pages match reference design
+2. **Cloudinary integration** - Real file uploads
+3. **Email system** - Password reset, notifications
+4. **Admin enhancements** - Task generation, user management
+5. **Testing** - Unit and integration tests
+6. **Deployment** - Configure Vercel properly
+7. **SEO** - Meta tags, sitemap
+
+---
+
+# CONCLUSION
+
+This is the complete architecture of the Yegna AI Platform. The system is built as a modular monorepo with:
+
+- **Next.js frontend** with component-based architecture
+- **Express backend** with layered architecture (routes → controllers → services → models)
+- **PostgreSQL database** with 13 interconnected tables
+- **Config-driven** system with zero hardcoded values
+- **Full i18n** support (English + Amharic)
+- **MLM referral system** with 5-level commissions
+- **Task system** for AI training
+- **Wallet system** with deposits and withdrawals
+- **Admin panel** for platform management
+- **Ethiopian-themed UI** with premium design
+
+---
+
+**This documentation is ready to be used in a new chat to continue development. Good luck, Atnatewos! 🚀**

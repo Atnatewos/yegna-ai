@@ -3,6 +3,8 @@
  * Yegna AI - Task Service
  * 
  * Handles task management, generation, and submissions.
+ * Enforces strict daily task limits to prevent financial drain
+ * and ensures all submissions are queued for admin approval.
  */
 
 const { queryOne, queryMany, insertOne, update, transaction } = require('../utils/database');
@@ -115,7 +117,7 @@ async function submitTask(userId, submissionData) {
   const { taskId, content, attachments } = submissionData;
   
   return await transaction(async (client) => {
-    // Get task and check availability
+    // Acquire row-level lock on the task to prevent concurrent submission race conditions
     const task = await client.query(
       `SELECT * FROM tasks
        WHERE id = $1
@@ -130,17 +132,14 @@ async function submitTask(userId, submissionData) {
     
     const taskData = task.rows[0];
     
-    // Check if task is expired
     if (taskData.expires_at && new Date(taskData.expires_at) < new Date()) {
       throw new Error('Task has expired');
     }
     
-    // Check if max completions reached
     if (taskData.completion_count >= taskData.max_completions) {
       throw new Error('Task has reached maximum completions');
     }
     
-    // Check if user already submitted
     const existingSubmission = await client.query(
       `SELECT id FROM task_submissions
        WHERE task_id = $1 AND user_id = $2`,
@@ -150,8 +149,32 @@ async function submitTask(userId, submissionData) {
     if (existingSubmission.rows[0]) {
       throw new Error('You have already submitted this task');
     }
+
+    // CRITICAL SECURITY: Enforce daily task limits to prevent financial drain
+    const userLevel = await client.query(
+      `SELECT ml.tasks_per_day 
+       FROM user_memberships um
+       JOIN membership_levels ml ON ml.id = um.level_id
+       WHERE um.user_id = $1 AND um.is_active = true`,
+      [userId]
+    );
     
-    // Build submission data based on task type
+    const maxTasksPerDay = userLevel.rows[0]?.tasks_per_day || 5;
+    const today = new Date().toISOString().split('T')[0];
+    
+    const todayProgress = await client.query(
+      `SELECT COALESCE(tasks_completed, 0) AS tasks_completed 
+       FROM daily_earnings 
+       WHERE user_id = $1 AND task_date = $2`,
+      [userId, today]
+    );
+    
+    const completedToday = todayProgress.rows[0]?.tasks_completed || 0;
+    
+    if (completedToday >= maxTasksPerDay) {
+      throw new Error(`Daily task limit reached. Maximum ${maxTasksPerDay} tasks per day.`);
+    }
+    
     let submissionPayload = {};
     
     switch (taskData.task_type) {
@@ -159,47 +182,32 @@ async function submitTask(userId, submissionData) {
         submissionPayload = {
           content: validators.sanitizeString(content || '')
         };
-        
         if (submissionPayload.content.length < 50) {
           throw new Error('Text content must be at least 50 characters');
         }
         break;
-        
       case 'image':
-        submissionPayload = {
-          imageUrl: content?.imageUrl || content || ''
-        };
-        
+        submissionPayload = { imageUrl: content?.imageUrl || content || '' };
         if (!submissionPayload.imageUrl) {
           throw new Error('Image is required');
         }
         break;
-        
       case 'file':
-        submissionPayload = {
-          fileUrl: content?.fileUrl || content || ''
-        };
-        
+        submissionPayload = { fileUrl: content?.fileUrl || content || '' };
         if (!submissionPayload.fileUrl) {
           throw new Error('File is required');
         }
         break;
-        
       case 'voice':
-        submissionPayload = {
-          voiceUrl: content?.voiceUrl || content || ''
-        };
-        
+        submissionPayload = { voiceUrl: content?.voiceUrl || content || '' };
         if (!submissionPayload.voiceUrl) {
           throw new Error('Voice recording is required');
         }
         break;
-        
       default:
         throw new Error('Invalid task type');
     }
     
-    // Create submission
     const submission = await client.query(
       `INSERT INTO task_submissions (
          task_id,
@@ -219,7 +227,6 @@ async function submitTask(userId, submissionData) {
       ]
     );
     
-    // Update task completion count
     await client.query(
       `UPDATE tasks
        SET completion_count = completion_count + 1
@@ -253,8 +260,7 @@ async function approveSubmission(submissionId) {
     
     const submissionData = submission.rows[0];
     
-    // Update submission status
-    const updatedSubmission = await client.query(
+    await client.query(
       `UPDATE task_submissions
        SET status = 'approved',
            reviewed_at = CURRENT_TIMESTAMP
@@ -263,7 +269,7 @@ async function approveSubmission(submissionId) {
       [submissionId]
     );
     
-    // Credit wallet
+    // Credit wallet with row-level locking implicitly handled by transaction isolation
     await client.query(
       `UPDATE wallets
        SET balance = balance + $1,
@@ -273,7 +279,6 @@ async function approveSubmission(submissionId) {
       [submissionData.reward_amount, submissionData.user_id]
     );
     
-    // Update daily earnings
     const today = new Date().toISOString().split('T')[0];
     
     await client.query(

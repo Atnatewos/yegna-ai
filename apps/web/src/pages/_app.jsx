@@ -3,7 +3,7 @@
  * Yegna AI - App Component
  * 
  * Main application wrapper component.
- * Imports all global styles and providers.
+ * Imports all global styles, providers, and error boundaries.
  */
 
 import React from 'react';
@@ -14,6 +14,7 @@ import { ConfigProvider } from '../context/ConfigContext';
 import { LanguageProvider } from '../context/LanguageContext';
 import { i18n } from '@yegna/i18n';
 import RootLayout from '../components/layout/RootLayout';
+import ErrorBoundary from '../components/layout/ErrorBoundary';
 
 /* Design System Styles */
 import '../styles/variables.css';
@@ -52,6 +53,7 @@ const queryClient = new QueryClient({
  * - Config (platform settings)
  * - Auth (authentication)
  * - Language (language preference)
+ * - Error Boundary (crash recovery)
  * 
  * @param {object} props - Component props
  * @param {React.ComponentType} props.Component - Page component
@@ -59,18 +61,20 @@ const queryClient = new QueryClient({
  */
 export default function App({ Component, pageProps }) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <I18nextProvider i18n={i18n}>
-        <ConfigProvider>
-          <AuthProvider>
-            <LanguageProvider>
-              <RootLayout>
-                <Component {...pageProps} />
-              </RootLayout>
-            </LanguageProvider>
-          </AuthProvider>
-        </ConfigProvider>
-      </I18nextProvider>
-    </QueryClientProvider>
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <I18nextProvider i18n={i18n}>
+          <ConfigProvider>
+            <AuthProvider>
+              <LanguageProvider>
+                <RootLayout>
+                  <Component {...pageProps} />
+                </RootLayout>
+              </LanguageProvider>
+            </AuthProvider>
+          </ConfigProvider>
+        </I18nextProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 }

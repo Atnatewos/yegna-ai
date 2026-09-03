@@ -1,39 +1,18 @@
 /**
  * File: apps/api/middleware/auth.middleware.js
  * Yegna AI - Authentication Middleware
- * 
- * Verifies JWT tokens and attaches user data to request object.
  */
-
 const { verifyToken } = require('../utils/jwt');
 const { queryOne } = require('../utils/database');
 
-/**
- * Authentication middleware
- * Verifies the JWT token from Authorization header
- * and attaches the user to the request object.
- * 
- * @param {object} req - Express request object
- * @param {object} res - Express response object
- * @param {Function} next - Express next middleware function
- */
 async function authenticate(req, res, next) {
   try {
-    const authHeader = req.headers.authorization;
-    
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({
-        success: false,
-        message: 'Authentication required'
-      });
-    }
-    
-    const token = authHeader.split(' ')[1];
+    const token = req.cookies?.yegna_access_token;
     
     if (!token) {
       return res.status(401).json({
         success: false,
-        message: 'Authentication token missing'
+        message: 'Authentication required'
       });
     }
     
@@ -48,19 +27,9 @@ async function authenticate(req, res, next) {
     }
     
     const user = await queryOne(
-      `SELECT 
-         id,
-         username,
-         email,
-         full_name,
-         phone,
-         role,
-         referral_code,
-         is_active,
-         is_verified
+      `SELECT id, username, email, full_name, phone, role, referral_code, is_active, is_verified
        FROM users
-       WHERE id = $1
-         AND is_active = true`,
+       WHERE id = $1 AND is_active = true`,
       [decoded.userId]
     );
     
@@ -84,38 +53,17 @@ async function authenticate(req, res, next) {
   }
 }
 
-/**
- * Optional authentication middleware
- * Attaches user if token is valid, but doesn't require it.
- * 
- * @param {object} req - Express request object
- * @param {object} res - Express response object
- * @param {Function} next - Express next middleware function
- */
 async function optionalAuthenticate(req, res, next) {
   try {
-    const authHeader = req.headers.authorization;
+    const token = req.cookies?.yegna_access_token;
     
-    if (authHeader && authHeader.startsWith('Bearer ')) {
-      const token = authHeader.split(' ')[1];
-      
+    if (token) {
       try {
         const decoded = verifyToken(token);
-        
         const user = await queryOne(
-          `SELECT 
-             id,
-             username,
-             email,
-             full_name,
-             phone,
-             role,
-             referral_code,
-             is_active,
-             is_verified
+          `SELECT id, username, email, full_name, phone, role, referral_code, is_active, is_verified
            FROM users
-           WHERE id = $1
-             AND is_active = true`,
+           WHERE id = $1 AND is_active = true`,
           [decoded.userId]
         );
         

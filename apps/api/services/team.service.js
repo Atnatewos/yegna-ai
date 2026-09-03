@@ -3,68 +3,107 @@
  * Yegna AI - Team Service
  * 
  * Handles team management and referral tree operations.
+ * Optimized to use Recursive SQL CTEs for O(1) database calls
+ * regardless of tree depth, preventing N+1 query bottlenecks.
  */
 
 const { queryOne, queryMany, insertOne } = require('../utils/database');
 
 /**
- * Build referral tree for a user
+ * Build referral tree for a user using a single Recursive SQL CTE.
+ * This eliminates the N+1 query problem of recursive JavaScript calls.
  * 
  * @param {string} userId - User ID
- * @param {number} maxDepth - Maximum tree depth
- * @returns {Promise<Array>} Referral tree nodes
+ * @param {number} maxDepth - Maximum tree depth (default: 5)
+ * @returns {Promise<Array>} Nested referral tree nodes
  */
 async function buildReferralTree(userId, maxDepth = 5) {
-  const tree = [];
-  
-  async function buildLevel(currentUserId, currentDepth, parentId = null) {
-    if (currentDepth > maxDepth) return;
-    
-    const level = currentDepth;
-    
-    const directReferrals = await queryMany(
-      `SELECT 
-         u.id,
-         u.username,
-         u.full_name,
-         u.profile_image_url,
-         um.level_id,
-         ml.level_number,
-         u.is_active,
-         u.created_at
-       FROM users u
-       LEFT JOIN user_memberships um ON um.user_id = u.id AND um.is_active = true
-       LEFT JOIN membership_levels ml ON ml.id = um.level_id
-       WHERE u.referrer_id = $1
-       ORDER BY u.created_at DESC`,
-      [currentUserId]
-    );
-    
-    for (const referral of directReferrals) {
-      const node = {
-        id: referral.id,
-        username: referral.username,
-        fullName: referral.full_name,
-        profileImageUrl: referral.profile_image_url,
-        levelNumber: referral.level_number || 0,
-        isActive: referral.is_active,
-        createdAt: referral.created_at,
-        level: level,
-        parentId: parentId,
-        children: []
-      };
+  const treeData = await queryMany(
+    `WITH RECURSIVE referral_tree AS (
+      -- Base case: Direct referrals (Level 1)
+      SELECT 
+        u.id,
+        u.username,
+        u.full_name,
+        u.profile_image_url,
+        u.referrer_id,
+        COALESCE(ml.level_number, 0) AS level_number,
+        u.is_active,
+        u.created_at,
+        1 AS depth
+      FROM users u
+      LEFT JOIN user_memberships um ON um.user_id = u.id AND um.is_active = true
+      LEFT JOIN membership_levels ml ON ml.id = um.level_id
+      WHERE u.referrer_id = $1
       
-      tree.push(node);
+      UNION ALL
       
-      if (currentDepth < maxDepth) {
-        await buildLevel(referral.id, currentDepth + 1, referral.id);
+      -- Recursive case: Downline members (Level 2 to maxDepth)
+      SELECT 
+        u.id,
+        u.username,
+        u.full_name,
+        u.profile_image_url,
+        u.referrer_id,
+        COALESCE(ml.level_number, 0) AS level_number,
+        u.is_active,
+        u.created_at,
+        rt.depth + 1
+      FROM users u
+      LEFT JOIN user_memberships um ON um.user_id = u.id AND um.is_active = true
+      LEFT JOIN membership_levels ml ON ml.id = um.level_id
+      JOIN referral_tree rt ON u.referrer_id = rt.id
+      WHERE rt.depth < $2
+    )
+    SELECT * FROM referral_tree
+    ORDER BY depth ASC, created_at DESC`,
+    [userId, maxDepth]
+  );
+
+  return formatNestedTree(treeData, userId);
+}
+
+/**
+ * Formats a flat array of tree nodes into a nested hierarchical structure.
+ * 
+ * @param {Array<object>} nodes - Flat array of tree nodes from database
+ * @param {string} rootId - The root user ID
+ * @returns {Array<object>} Nested tree structure
+ */
+function formatNestedTree(nodes, rootId) {
+  const nodeMap = new Map();
+  const roots = [];
+
+  // Initialize node map with children arrays
+  nodes.forEach(node => {
+    nodeMap.set(node.id, {
+      id: node.id,
+      username: node.username,
+      fullName: node.full_name,
+      profileImageUrl: node.profile_image_url,
+      levelNumber: node.level_number,
+      isActive: node.is_active,
+      createdAt: node.created_at,
+      level: node.depth,
+      parentId: node.referrer_id || rootId,
+      children: []
+    });
+  });
+
+  // Build the hierarchy
+  nodes.forEach(node => {
+    const treeNode = nodeMap.get(node.id);
+    if (node.referrer_id === rootId) {
+      roots.push(treeNode);
+    } else {
+      const parent = nodeMap.get(node.referrer_id);
+      if (parent) {
+        parent.children.push(treeNode);
       }
     }
-  }
-  
-  await buildLevel(userId, 1);
-  
-  return tree;
+  });
+
+  return roots;
 }
 
 /**
@@ -213,7 +252,7 @@ async function getCommissionHistory(userId, page = 1, limit = 10) {
 async function updateReferralTree(newUserId, referrerId) {
   if (!referrerId) return;
   
-  // Get all ancestors of the referrer (up to 5 levels)
+  // Get all ancestors of the referrer (up to 5 levels) using Recursive CTE
   const ancestors = await queryMany(
     `WITH RECURSIVE ancestor_tree AS (
        SELECT 

@@ -3,6 +3,7 @@
  * Yegna AI - Single Task Page
  * 
  * Displays a single task with full details and submission form.
+ * Updated to reflect that submissions are queued for admin review.
  */
 
 import React, { useState, useCallback } from 'react';
@@ -35,9 +36,6 @@ export default function TaskDetailPage() {
   const [selectedOption, setSelectedOption] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  /**
-   * Fetch task details
-   */
   const { data, isLoading, isError } = useQuery(
     ['taskDetail', taskId],
     () => getTaskById(taskId),
@@ -47,13 +45,11 @@ export default function TaskDetailPage() {
     }
   );
 
-  /**
-   * Submit task mutation
-   */
   const submitMutation = useMutation(
     (submissionData) => submitTask(submissionData),
     {
       onSuccess: (response) => {
+        // Updated messaging to match backend reality: submission is pending review
         showSuccessToast(response.message || t('tasks.submitSuccess'));
         queryClient.invalidateQueries(['availableTasks']);
         queryClient.invalidateQueries(['todayProgress']);
@@ -66,9 +62,6 @@ export default function TaskDetailPage() {
     }
   );
 
-  /**
-   * Handle submission
-   */
   const handleSubmit = useCallback(() => {
     if (!selectedOption) {
       showErrorToast(t('tasks.selectOption'));
@@ -80,9 +73,9 @@ export default function TaskDetailPage() {
     submitMutation.mutate({
       taskId,
       content: selectedOption,
-      taskType: task?.task_type || 'text'
+      taskType: data?.data?.task_type || 'text'
     });
-  }, [taskId, selectedOption, task, submitMutation, showErrorToast, t]);
+  }, [taskId, selectedOption, data, submitMutation, showErrorToast, t]);
 
   const task = data?.data;
 
@@ -131,7 +124,6 @@ export default function TaskDetailPage() {
       </button>
 
       <Card className="space-y-6 p-6 md:p-8">
-        {/* Task Header */}
         <div className="flex items-start justify-between pb-4 border-b border-slate-100">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-2xl icon-gradient shadow-md">
@@ -154,7 +146,6 @@ export default function TaskDetailPage() {
           </div>
         </div>
 
-        {/* Task Meta */}
         <div className="flex items-center gap-4 text-xs text-slate-500">
           <div className="flex items-center gap-1">
             <Award className="w-4 h-4 text-emerald-600" />
@@ -166,14 +157,12 @@ export default function TaskDetailPage() {
           </div>
         </div>
 
-        {/* Task Description */}
         <div className="bg-slate-50 rounded-2xl p-5 border border-slate-200">
           <p className="text-sm font-semibold text-slate-800 leading-relaxed">
             {task.description}
           </p>
         </div>
 
-        {/* Options */}
         <div className="space-y-3">
           <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">
             {t('tasks.selectAnnotation')}
@@ -200,7 +189,6 @@ export default function TaskDetailPage() {
           </div>
         </div>
 
-        {/* Submit Button */}
         <div className="pt-4 border-t border-slate-100">
           <button
             onClick={handleSubmit}

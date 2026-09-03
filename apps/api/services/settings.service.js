@@ -3,18 +3,20 @@
  * Yegna AI - Platform Settings Service
  * 
  * Manages platform settings that can be controlled
- * from the admin panel.
+ * from the admin panel. Utilizes in-memory caching
+ * to reduce database load for frequently accessed configs.
  */
 
-const { queryOne, queryMany, insertOne, update } = require('../utils/database');
+const { queryOne, queryMany, insertOne, update, invalidateCache } = require('../utils/database');
 
 /**
- * Get all settings of a specific type
+ * Get all settings of a specific type with caching
  * 
  * @param {string} settingType - Type of settings to retrieve
  * @returns {Promise<Array>} Array of settings
  */
 async function getSettingsByType(settingType) {
+  const cacheKey = `settings_type_${settingType}`;
   const result = await queryMany(
     `SELECT 
        id,
@@ -28,19 +30,21 @@ async function getSettingsByType(settingType) {
      WHERE setting_type = $1
        AND is_active = true
      ORDER BY setting_key ASC`,
-    [settingType]
+    [settingType],
+    cacheKey
   );
   
   return result;
 }
 
 /**
- * Get a specific setting by key
+ * Get a specific setting by key with caching
  * 
  * @param {string} settingKey - Setting key to retrieve
  * @returns {Promise<object|null>} Setting object or null
  */
 async function getSettingByKey(settingKey) {
+  const cacheKey = `setting_key_${settingKey}`;
   const result = await queryOne(
     `SELECT 
        id,
@@ -53,7 +57,8 @@ async function getSettingByKey(settingKey) {
      FROM platform_settings
      WHERE setting_key = $1
        AND is_active = true`,
-    [settingKey]
+    [settingKey],
+    cacheKey
   );
   
   return result;
@@ -108,7 +113,7 @@ async function getCommissionSettings() {
 }
 
 /**
- * Update a setting value
+ * Update a setting value and invalidate cache
  * 
  * @param {string} settingKey - Setting key to update
  * @param {object} settingValue - New setting value
@@ -129,11 +134,14 @@ async function updateSetting(settingKey, settingValue, adminId) {
     throw new Error(`Setting not found: ${settingKey}`);
   }
   
+  // Invalidate all settings caches on update to ensure consistency
+  invalidateCache();
+  
   return getSettingByKey(settingKey);
 }
 
 /**
- * Create a new setting
+ * Create a new setting and invalidate cache
  * 
  * @param {object} settingData - Setting data
  * @param {string} adminId - ID of admin creating the setting
@@ -159,11 +167,13 @@ async function createSetting(settingData, adminId) {
     ]
   );
   
+  invalidateCache();
+  
   return result;
 }
 
 /**
- * Delete a setting
+ * Delete a setting and invalidate cache
  * 
  * @param {string} settingKey - Setting key to delete
  * @returns {Promise<number>} Number of deleted rows
@@ -177,11 +187,13 @@ async function deleteSetting(settingKey) {
     [settingKey]
   );
   
+  invalidateCache();
+  
   return result;
 }
 
 /**
- * Get all settings for admin panel
+ * Get all settings for admin panel (uncached for admin view to ensure absolute freshness)
  * 
  * @returns {Promise<Array>} All settings
  */

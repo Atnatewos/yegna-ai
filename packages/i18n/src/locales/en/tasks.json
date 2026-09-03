@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "title": "AI Tasks",
+    "title": "Tasks",
     "subtitle": "Continuous AI Model Dataset Annotation Portal",
     "searchPlaceholder": "Search tasks...",
     "loading": "Loading tasks...",
@@ -18,7 +18,8 @@
     "yourAnswer": "Your Answer",
     "answerPlaceholder": "Enter your answer here...",
     "contentRequired": "Please provide your answer",
-    "submitSuccess": "Task verified! Reward added to wallet.",
+    "submitSuccess": "Task submitted successfully! Awaiting admin approval.",
+    "submitPending": "Submitted for Review",
     "submitError": "Failed to submit task",
     "taskNotFound": "Task Not Found",
     "taskNotFoundDescription": "The task you are looking for does not exist.",
@@ -32,6 +33,19 @@
     "selectOption": "Please select an option before submitting",
     "backToTasks": "Back to Tasks",
     "execute": "Execute",
+    "availableTab": "Available Tasks",
+    "historyTab": "Submission History",
+    "historyTitle": "Submission History",
+    "historyEmpty": "No submissions yet",
+    "taskName": "Task Name",
+    "type": "Type",
+    "status": "Status",
+    "date": "Date",
+    "status": {
+      "pending": "Pending Review",
+      "approved": "Approved",
+      "rejected": "Rejected"
+    },
     "types": {
       "text": {
         "label": "Amharic Text & NLP"

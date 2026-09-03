@@ -3,6 +3,8 @@
  * Yegna AI - Wallet Service
  * 
  * Handles wallet operations including balance, deposits, and withdrawals.
+ * Implements strict row-level locking (FOR UPDATE) to prevent race conditions
+ * and double-spending vulnerabilities during concurrent financial mutations.
  */
 
 const { queryOne, queryMany, insertOne, update, transaction } = require('../utils/database');
@@ -163,6 +165,7 @@ async function createDeposit(userId, depositData) {
  */
 async function approveDeposit(depositId, adminId, notes = '') {
   return await transaction(async (client) => {
+    // Acquire exclusive row lock to prevent concurrent approval of the same deposit
     const deposit = await client.query(
       `SELECT * FROM deposit_transactions
        WHERE id = $1
@@ -186,7 +189,6 @@ async function approveDeposit(depositId, adminId, notes = '') {
       [adminId, notes, depositId]
     );
     
-    // Update wallet balance
     await client.query(
       `UPDATE wallets
        SET balance = balance + $1,
@@ -195,7 +197,6 @@ async function approveDeposit(depositId, adminId, notes = '') {
       [deposit.rows[0].amount, deposit.rows[0].user_id]
     );
     
-    // Update user membership level
     await client.query(
       `INSERT INTO user_memberships (user_id, level_id)
        VALUES ($1, $2)
@@ -250,7 +251,6 @@ async function rejectDeposit(depositId, adminId, notes = '') {
 async function createWithdrawal(userId, withdrawalData) {
   const { amount, paymentMethod, accountDetails } = withdrawalData;
   
-  // Get withdrawal settings from database
   const withdrawalConfig = await settingsService.getWithdrawalSettings();
   const config = withdrawalConfig.withdrawal_config || {
     minimum: 100,
@@ -258,7 +258,6 @@ async function createWithdrawal(userId, withdrawalData) {
     feePercentage: 2
   };
   
-  // Validate amount
   if (amount < config.minimum) {
     throw new Error(`Minimum withdrawal amount is ${config.minimum} ETB`);
   }
@@ -267,12 +266,11 @@ async function createWithdrawal(userId, withdrawalData) {
     throw new Error(`Maximum withdrawal amount is ${config.maximum} ETB`);
   }
   
-  // Calculate fee
   const fee = (amount * config.feePercentage) / 100;
   const netAmount = amount - fee;
   
   return await transaction(async (client) => {
-    // Check wallet balance
+    // CRITICAL: Acquire exclusive row lock on wallet to prevent double-spending race conditions
     const wallet = await client.query(
       `SELECT balance FROM wallets
        WHERE user_id = $1
@@ -284,7 +282,6 @@ async function createWithdrawal(userId, withdrawalData) {
       throw new Error('Insufficient balance');
     }
     
-    // Deduct from wallet
     await client.query(
       `UPDATE wallets
        SET balance = balance - $1,
@@ -294,7 +291,6 @@ async function createWithdrawal(userId, withdrawalData) {
       [amount, amount, userId]
     );
     
-    // Create withdrawal request
     const withdrawal = await client.query(
       `INSERT INTO withdrawal_requests (
          user_id,
@@ -350,6 +346,7 @@ async function processWithdrawal(withdrawalId, adminId, transactionReference = '
  */
 async function rejectWithdrawal(withdrawalId, adminId) {
   return await transaction(async (client) => {
+    // Acquire exclusive row lock to prevent concurrent rejection/processing
     const withdrawal = await client.query(
       `SELECT * FROM withdrawal_requests
        WHERE id = $1
@@ -362,7 +359,7 @@ async function rejectWithdrawal(withdrawalId, adminId) {
       throw new Error('Withdrawal not found or already processed');
     }
     
-    // Refund wallet
+    // Refund wallet atomically
     await client.query(
       `UPDATE wallets
        SET balance = balance + $1,
@@ -372,7 +369,6 @@ async function rejectWithdrawal(withdrawalId, adminId) {
       [withdrawal.rows[0].amount, withdrawal.rows[0].user_id]
     );
     
-    // Update withdrawal status
     const updatedWithdrawal = await client.query(
       `UPDATE withdrawal_requests
        SET status = 'rejected',

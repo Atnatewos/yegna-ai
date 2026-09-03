@@ -3,6 +3,8 @@
  * Yegna AI - Commission Service
  * 
  * Handles commission calculations and distribution.
+ * Ensures atomic execution of multi-step financial operations
+ * using database transactions to maintain data integrity.
  */
 
 const { queryOne, queryMany, insertOne, transaction } = require('../utils/database');
@@ -19,7 +21,6 @@ const settingsService = require('./settings.service');
 async function processDirectReferralCommission(referrerId, newUserId, depositAmount) {
   if (!referrerId || depositAmount <= 0) return null;
   
-  // Get commission settings from database
   const commissionSettings = await settingsService.getCommissionSettings();
   const directCommission = commissionSettings.direct_referral_commission || {
     enabled: true,
@@ -29,7 +30,6 @@ async function processDirectReferralCommission(referrerId, newUserId, depositAmo
   
   if (!directCommission.enabled) return null;
   
-  // Check referrer's level
   const referrer = await queryOne(
     `SELECT 
        u.id,
@@ -46,11 +46,9 @@ async function processDirectReferralCommission(referrerId, newUserId, depositAmo
     return null;
   }
   
-  // Calculate commission amount
   const commissionAmount = (depositAmount * directCommission.percentage) / 100;
   
   return await transaction(async (client) => {
-    // Create commission transaction
     const commission = await client.query(
       `INSERT INTO commission_transactions (
          user_id,
@@ -69,7 +67,6 @@ async function processDirectReferralCommission(referrerId, newUserId, depositAmo
       ]
     );
     
-    // Credit referrer's wallet
     await client.query(
       `UPDATE wallets
        SET balance = balance + $1,
@@ -93,7 +90,6 @@ async function processDirectReferralCommission(referrerId, newUserId, depositAmo
 async function processTeamTaskCommission(userId, taskReward) {
   if (taskReward <= 0) return [];
   
-  // Get commission settings from database
   const commissionSettings = await settingsService.getCommissionSettings();
   const teamLevels = commissionSettings.team_level_commissions || [
     { level: 1, percentage: 10 },
@@ -103,7 +99,6 @@ async function processTeamTaskCommission(userId, taskReward) {
     { level: 5, percentage: 1 }
   ];
   
-  // Get upline team members
   const uplineMembers = await queryMany(
     `SELECT 
        rt.referrer_id AS user_id,
@@ -124,7 +119,6 @@ async function processTeamTaskCommission(userId, taskReward) {
       
       const commissionAmount = (taskReward * commissionConfig.percentage) / 100;
       
-      // Create commission transaction
       const commission = await client.query(
         `INSERT INTO commission_transactions (
            user_id,
@@ -144,7 +138,6 @@ async function processTeamTaskCommission(userId, taskReward) {
         ]
       );
       
-      // Credit upline's wallet
       await client.query(
         `UPDATE wallets
          SET balance = balance + $1,
@@ -154,7 +147,6 @@ async function processTeamTaskCommission(userId, taskReward) {
         [commissionAmount, upline.user_id]
       );
       
-      // Update daily earnings for upline
       const today = new Date().toISOString().split('T')[0];
       
       await client.query(

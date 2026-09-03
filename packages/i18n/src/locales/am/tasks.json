@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "title": "የ AI ተግባራት",
+    "title": "ተግባራት",
     "subtitle": "ቀጣይነት ያለው የAI ሞዴል ዳታ ማብራሪያ ፖርታል",
     "searchPlaceholder": "ሥራዎችን ይፈልጉ...",
     "loading": "ሥራዎችን በመጫን ላይ...",
@@ -18,7 +18,8 @@
     "yourAnswer": "መልስዎ",
     "answerPlaceholder": "መልስዎን እዚህ ያስገቡ...",
     "contentRequired": "እባክዎ መልስዎን ያቅርቡ",
-    "submitSuccess": "ሥራ ተረጋግጧል! ሽልማት ወደ ቦርሳ ተጨምሯል።",
+    "submitSuccess": "ሥራው በተሳካ ሁኔታ ቀርቧል! በግምገማ ላይ ነው።",
+    "submitPending": "ለግምገማ ቀርቧል",
     "submitError": "ሥራውን ማስገባት አልተሳካም",
     "taskNotFound": "ሥራው አልተገኘም",
     "taskNotFoundDescription": "የፈለጉት ሥራ የለም።",
@@ -32,6 +33,19 @@
     "selectOption": "ከማስገባትዎ በፊት አንድ አማራጭ ይምረጡ",
     "backToTasks": "ወደ ስራዎች ተመለስ",
     "execute": "ፈጽም",
+    "availableTab": "የሚገኙ ሥራዎች",
+    "historyTab": "የማስገባት ታሪክ",
+    "historyTitle": "የማስገባት ታሪክ",
+    "historyEmpty": "እስካሁን ምንም ማስገባት የለም",
+    "taskName": "የሥራ ስም",
+    "type": "ዓይነት",
+    "status": "ሁኔታ",
+    "date": "ቀን",
+    "status": {
+      "pending": "ግምገማ በመጠባበቅ ላይ",
+      "approved": "ጸድቋል",
+      "rejected": "ውድቅ ተደርጓል"
+    },
     "types": {
       "text": {
         "label": "የአማርኛ ጽሑፍ እና NLP"

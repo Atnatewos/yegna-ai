@@ -4,6 +4,7 @@
  * 
  * Main dashboard with hero banner, stats cards,
  * available tasks, and recent activity.
+ * Updated mock activity to reflect "Submitted for Review" status.
  */
 
 import React, { useMemo, useCallback } from 'react';
@@ -21,9 +22,6 @@ import { useConfig } from '../../hooks/useConfig';
 import { getBalance } from '../../services/walletService';
 import { getTasks, getTodayProgress } from '../../services/taskService';
 import { getTeamStatistics } from '../../services/teamService';
-import Card from '../../components/ui/Card';
-import Button from '../../components/ui/Button';
-import Badge from '../../components/ui/Badge';
 import Spinner from '../../components/ui/Spinner';
 import Breadcrumbs from '../../components/navigation/Breadcrumbs';
 
@@ -37,9 +35,6 @@ export default function DashboardPage() {
   const { t } = useTranslation('dashboard');
   const { levels } = useConfig();
 
-  /**
-   * Fetch wallet balance
-   */
   const { data: walletData, isLoading: walletLoading } = useQuery(
     'walletBalance',
     getBalance,
@@ -48,9 +43,6 @@ export default function DashboardPage() {
     }
   );
 
-  /**
-   * Fetch today's progress
-   */
   const { data: progressData, isLoading: progressLoading } = useQuery(
     'todayProgress',
     getTodayProgress,
@@ -59,9 +51,6 @@ export default function DashboardPage() {
     }
   );
 
-  /**
-   * Fetch team statistics
-   */
   const { data: teamData, isLoading: teamLoading } = useQuery(
     'teamStatistics',
     getTeamStatistics,
@@ -70,9 +59,6 @@ export default function DashboardPage() {
     }
   );
 
-  /**
-   * Fetch available tasks
-   */
   const { data: tasksData, isLoading: tasksLoading } = useQuery(
     'availableTasks',
     () => getTasks(1, 3),
@@ -81,24 +67,15 @@ export default function DashboardPage() {
     }
   );
 
-  /**
-   * Get current tier from user
-   */
   const currentTier = useMemo(() => {
     if (!user?.tierId) return levels.levels[0];
     return levels.levels.find((lvl) => lvl.id === user.tierId) || levels.levels[0];
   }, [user?.tierId, levels.levels]);
 
-  /**
-   * Handle navigate to tasks
-   */
   const handleNavigateToTasks = useCallback(() => {
     router.push('/tasks');
   }, [router]);
 
-  /**
-   * Handle navigate to levels
-   */
   const handleNavigateToLevels = useCallback(() => {
     router.push('/levels');
   }, [router]);
@@ -108,18 +85,12 @@ export default function DashboardPage() {
   const teamStats = teamData?.data || {};
   const tasks = tasksData?.data?.tasks || [];
 
-  /**
-   * Task icon mapping
-   */
   const taskIcons = {
     text: FileText,
     image: ImageIcon,
     voice: Mic
   };
 
-  /**
-   * Calculate progress percentage
-   */
   const progressPercentage = currentTier?.tasksPerDay > 0
     ? Math.min(100, ((progress.tasks_completed || 0) / currentTier.tasksPerDay) * 100)
     : 0;
@@ -136,7 +107,6 @@ export default function DashboardPage() {
     <div className="space-y-6">
       <Breadcrumbs />
 
-      {/* Hero Banner */}
       <div className="hero-banner">
         <div className="absolute -right-8 -bottom-8 w-64 h-64 bg-yellow-400/10 rounded-full blur-2xl pointer-events-none" />
         <div className="relative z-10 max-w-2xl">
@@ -172,9 +142,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Balance Card */}
         <div className="stat-card">
           <div className="flex items-center justify-between text-slate-500 mb-2">
             <span className="text-xs font-bold uppercase tracking-wider">
@@ -194,7 +162,6 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Current Tier Card */}
         <div className="stat-card">
           <div className="flex items-center justify-between text-slate-500 mb-2">
             <span className="text-xs font-bold uppercase tracking-wider">
@@ -221,7 +188,6 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Tasks Completed Card */}
         <div className="stat-card">
           <div className="flex items-center justify-between text-slate-500 mb-2">
             <span className="text-xs font-bold uppercase tracking-wider">
@@ -245,7 +211,6 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Team Commission Card */}
         <div className="stat-card">
           <div className="flex items-center justify-between text-slate-500 mb-2">
             <span className="text-xs font-bold uppercase tracking-wider">
@@ -268,9 +233,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Available Tasks */}
         <div className="lg:col-span-2 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
           <div className="flex items-center justify-between">
             <div>
@@ -337,7 +300,6 @@ export default function DashboardPage() {
           )}
         </div>
 
-        {/* Recent Activity */}
         <div className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
           <h3 className="font-extrabold text-slate-900 text-lg">
             {t('dashboard.recentActivity')}
@@ -346,10 +308,10 @@ export default function DashboardPage() {
             {[
               {
                 id: 'activity-1',
-                title: t('dashboard.taskCompletedActivity'),
-                amount: '+18.00 ETB',
+                title: 'Task Submitted: Sentiment Classification',
+                amount: 'Pending',
                 date: t('dashboard.justNow'),
-                positive: true
+                positive: false
               },
               {
                 id: 'activity-2',

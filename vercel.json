@@ -4,10 +4,6 @@
   "buildCommand": "npm run build",
   "installCommand": "npm install",
   "framework": "nextjs",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "builds": [
     {
       "src": "apps/web/package.json",
@@ -26,25 +22,6 @@
     {
       "src": "/(.*)",
       "dest": "apps/web/$1"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
-        }
-      ]
     }
   ]
 }

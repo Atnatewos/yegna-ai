@@ -1,9 +1,5 @@
 {
   "version": 2,
-  "name": "yegna-ai",
-  "buildCommand": "npm run build",
-  "installCommand": "npm install",
-  "framework": "nextjs",
   "builds": [
     {
       "src": "apps/web/package.json",

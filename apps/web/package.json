@@ -2,27 +2,26 @@
   "name": "@yegna/web",
   "version": "1.0.0",
   "private": true,
-  "description": "Yegna AI Frontend Application",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 3000",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "clean": "rm -rf .next"
   },
   "dependencies": {
+    "@yegna/config": "*",
+    "@yegna/i18n": "*",
+    "@yegna/ui": "*",
+    "@yegna/utils": "*",
+    "axios": "^1.6.7",
+    "js-cookie": "^3.0.5",
+    "lucide-react": "^0.344.0",
     "next": "^14.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "@yegna/config": "*",
-    "@yegna/ui": "*",
-    "@yegna/utils": "*",
-    "@yegna/i18n": "*",
-    "axios": "^1.6.7",
-    "lucide-react": "^0.344.0",
     "react-hook-form": "^7.50.0",
-    "react-query": "^3.39.3",
-    "js-cookie": "^3.0.5"
+    "react-query": "^3.39.3"
   },
   "devDependencies": {
     "eslint": "^8.57.0",
